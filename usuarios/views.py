@@ -12,6 +12,7 @@ from django.contrib.auth.models import Group
 from datetime import date
 import random
 import string
+import json
 
 
 # === FUNCIONES DE UTILIDAD ===
@@ -266,6 +267,13 @@ def detalle_usuario(request, usuario_id):
         'usuario': usuario,
     }
     
+    # Verificar si hay credenciales temporales en la sesión
+    if 'usuario_recien_creado' in request.session:
+        usuario_recien_creado = request.session['usuario_recien_creado']
+        # Solo mostrar si es para este usuario específico
+        if usuario_recien_creado.get('username') == usuario.username:
+            context['usuario_recien_creado'] = usuario_recien_creado
+    
     # Agregar información específica según tipo
     if usuario.tipo_usuario == TipoUsuario.NUTRICIONISTA:
         try:
@@ -349,6 +357,193 @@ def mi_valoracion_detalle(request, valoracion_id):
         messages.error(request, 'No tienes un perfil de paciente.')
     
     return redirect('dashboard')
+
+
+# === FUNCIONES PARA CREAR USUARIOS ESPECIALIZADOS ===
+
+def generar_usuario_para_nutricionista(datos_nutricionista):
+    """Genera automáticamente un usuario para un nutricionista"""
+    try:
+        # Generar email único si no tiene
+        if not datos_nutricionista.get('email'):
+            email = f"nutricionista_{datos_nutricionista['nombre'].lower()}_{datos_nutricionista['apellidos'].lower()}@nutricion.local"
+        else:
+            email = datos_nutricionista['email']
+            
+        # Generar username único
+        base_username = f"{datos_nutricionista['nombre'].lower()}.{datos_nutricionista['apellidos'].lower().replace(' ', '.')}"
+        username = base_username
+        counter = 1
+        
+        # Asegurar que el username sea único
+        while Usuario.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+        
+        # Generar contraseña temporal
+        password_temp = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+        
+        # Crear usuario
+        usuario = Usuario.objects.create_user(
+            username=username,
+            email=email,
+            password=password_temp,
+            first_name=datos_nutricionista['nombre'],
+            last_name=datos_nutricionista['apellidos'],
+            tipo_usuario=TipoUsuario.NUTRICIONISTA,
+            fecha_nacimiento=datos_nutricionista.get('fecha_nacimiento'),
+            telefono=datos_nutricionista.get('telefono')
+        )
+        
+        # Crear perfil de nutricionista
+        perfil = PerfilNutricionista.objects.create(
+            usuario=usuario,
+            numero_colegiado=datos_nutricionista.get('numero_colegiado', ''),
+            especialidad=datos_nutricionista.get('especialidad', ''),
+            años_experiencia=int(datos_nutricionista.get('años_experiencia', 0)),
+            biografia=datos_nutricionista.get('biografia', '')
+        )
+        
+        return usuario, password_temp
+        
+    except Exception as e:
+        raise Exception(f"Error creando usuario para nutricionista: {str(e)}")
+
+
+def generar_usuario_para_administrador(datos_administrador):
+    """Genera automáticamente un usuario administrador"""
+    try:
+        # Generar email único si no tiene
+        if not datos_administrador.get('email'):
+            email = f"admin_{datos_administrador['nombre'].lower()}_{datos_administrador['apellidos'].lower()}@nutricion.local"
+        else:
+            email = datos_administrador['email']
+            
+        # Generar username único
+        base_username = f"{datos_administrador['nombre'].lower()}.{datos_administrador['apellidos'].lower().replace(' ', '.')}"
+        username = base_username
+        counter = 1
+        
+        # Asegurar que el username sea único
+        while Usuario.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+        
+        # Generar contraseña temporal
+        password_temp = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
+        
+        # Crear usuario
+        usuario = Usuario.objects.create_user(
+            username=username,
+            email=email,
+            password=password_temp,
+            first_name=datos_administrador['nombre'],
+            last_name=datos_administrador['apellidos'],
+            tipo_usuario=TipoUsuario.ADMINISTRADOR,
+            fecha_nacimiento=datos_administrador.get('fecha_nacimiento'),
+            telefono=datos_administrador.get('telefono')
+        )
+        
+        return usuario, password_temp
+        
+    except Exception as e:
+        raise Exception(f"Error creando usuario administrador: {str(e)}")
+
+
+@user_passes_test(es_administrador)
+def crear_nutricionista(request):
+    """Crear nuevo nutricionista con generación automática de usuario"""
+    if request.method == 'POST':
+        try:
+            # Extraer datos del formulario
+            datos_nutricionista = {
+                'nombre': request.POST.get('nombre'),
+                'apellidos': request.POST.get('apellidos'),
+                'email': request.POST.get('email'),
+                'telefono': request.POST.get('telefono'),
+                'fecha_nacimiento': request.POST.get('fecha_nacimiento') or None,
+                'numero_colegiado': request.POST.get('numero_colegiado'),
+                'especialidad': request.POST.get('especialidad'),
+                'años_experiencia': request.POST.get('años_experiencia', 0),
+                'biografia': request.POST.get('biografia', '')
+            }
+            
+            # Validar campos requeridos
+            if not datos_nutricionista['nombre'] or not datos_nutricionista['apellidos']:
+                messages.error(request, 'El nombre y apellidos son requeridos.')
+                return render(request, 'usuarios/crear_nutricionista.html')
+            
+            if datos_nutricionista['email'] and Usuario.objects.filter(email=datos_nutricionista['email']).exists():
+                messages.error(request, 'Ya existe un usuario con este email.')
+                return render(request, 'usuarios/crear_nutricionista.html')
+            
+            # Generar usuario automáticamente
+            usuario_creado, password_temporal = generar_usuario_para_nutricionista(datos_nutricionista)
+            
+            messages.success(request, 
+                f'Nutricionista {usuario_creado.first_name} {usuario_creado.last_name} creado exitosamente. '
+                f'Se ha generado automáticamente el usuario.')
+            
+            # Agregar información para mostrar en el template
+            request.session['usuario_recien_creado'] = {
+                'username': usuario_creado.username,
+                'password': password_temporal,
+                'email': usuario_creado.email,
+                'tipo': 'nutricionista'
+            }
+            
+            return redirect('detalle_usuario', usuario_id=usuario_creado.id)
+            
+        except Exception as e:
+            messages.error(request, f'Error inesperado: {str(e)}')
+    
+    return render(request, 'usuarios/crear_nutricionista.html')
+
+
+@user_passes_test(es_administrador)
+def crear_administrador(request):
+    """Crear nuevo administrador con generación automática de usuario"""
+    if request.method == 'POST':
+        try:
+            # Extraer datos del formulario
+            datos_administrador = {
+                'nombre': request.POST.get('nombre'),
+                'apellidos': request.POST.get('apellidos'),
+                'email': request.POST.get('email'),
+                'telefono': request.POST.get('telefono'),
+                'fecha_nacimiento': request.POST.get('fecha_nacimiento') or None
+            }
+            
+            # Validar campos requeridos
+            if not datos_administrador['nombre'] or not datos_administrador['apellidos']:
+                messages.error(request, 'El nombre y apellidos son requeridos.')
+                return render(request, 'usuarios/crear_administrador.html')
+            
+            if datos_administrador['email'] and Usuario.objects.filter(email=datos_administrador['email']).exists():
+                messages.error(request, 'Ya existe un usuario con este email.')
+                return render(request, 'usuarios/crear_administrador.html')
+            
+            # Generar usuario automáticamente
+            usuario_creado, password_temporal = generar_usuario_para_administrador(datos_administrador)
+            
+            messages.success(request, 
+                f'Administrador {usuario_creado.first_name} {usuario_creado.last_name} creado exitosamente. '
+                f'Se ha generado automáticamente el usuario.')
+            
+            # Agregar información para mostrar en el template
+            request.session['usuario_recien_creado'] = {
+                'username': usuario_creado.username,
+                'password': password_temporal,
+                'email': usuario_creado.email,
+                'tipo': 'administrador'
+            }
+            
+            return redirect('detalle_usuario', usuario_id=usuario_creado.id)
+            
+        except Exception as e:
+            messages.error(request, f'Error inesperado: {str(e)}')
+    
+    return render(request, 'usuarios/crear_administrador.html')
 
 
 # === NOTA: FUNCIONALIDAD DE VINCULAR PACIENTES REMOVIDA ===

@@ -74,14 +74,17 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a href="{% url 'crear_usuario' %}" class="btn btn-primary-custom">
-                                <i class="fas fa-user-plus me-2"></i>Crear Usuario
+                            <a href="{% url 'crear_nutricionista' %}" class="btn btn-success">
+                                <i class="fas fa-user-md me-2"></i>Crear Nutricionista
+                            </a>
+                            <a href="{% url 'crear_administrador' %}" class="btn btn-danger">
+                                <i class="fas fa-user-cog me-2"></i>Crear Administrador
+                            </a>
+                            <a href="{% url 'crear_paciente' %}" class="btn btn-info">
+                                <i class="fas fa-user-injured me-2"></i>Crear Paciente
                             </a>
                             <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary-custom">
                                 <i class="fas fa-users me-2"></i>Gestionar Usuarios
-                            </a>
-                            <a href="{% url 'crear_paciente' %}" class="btn btn-success">
-                                <i class="fas fa-user-injured me-2"></i>Crear Paciente
                             </a>
                             <a href="/admin/" class="btn btn-outline-info">
                                 <i class="fas fa-cog me-2"></i>Administración Django

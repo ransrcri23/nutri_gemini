@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear Nutricionista{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h2 class="mb-0">
+                            <i class="fas fa-user-md text-success me-2"></i>
+                            Crear Nuevo Nutricionista
+                        </h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="formCrearNutricionista">
+                        {% csrf_token %}
+                        
+                        <!-- Datos Básicos -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                Datos Básicos
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label">Nombre *</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="apellidos" class="form-label">Apellidos *</label>
+                                    <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                    <small class="form-text text-muted">Si no se proporciona, se generará automáticamente</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="telefono" name="telefono">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Datos Profesionales -->
+                        <div class="mb-4">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-user-md me-2"></i>
+                                Datos Profesionales
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="numero_colegiado" class="form-label">Número Colegiado</label>
+                                    <input type="text" class="form-control" id="numero_colegiado" name="numero_colegiado">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="especialidad" class="form-label">Especialidad</label>
+                                    <input type="text" class="form-control" id="especialidad" name="especialidad">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="años_experiencia" class="form-label">Años de Experiencia</label>
+                                    <input type="number" class="form-control" id="años_experiencia" name="años_experiencia" min="0">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="biografia" class="form-label">Biografía</label>
+                                <textarea class="form-control" id="biografia" name="biografia" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Info sobre generación automática -->
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Nota:</strong> Se generará automáticamente un usuario con credenciales temporales. Estas credenciales se mostrarán después de la creación.
+                        </div>
+                        
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>
+                                Crear Nutricionista
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

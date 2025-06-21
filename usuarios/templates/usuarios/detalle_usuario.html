@@ -5,7 +5,27 @@
 
 {% block content %}
 <div class="container-fluid py-4">
-    <div class="row">
+    {% csrf_token %}
+    <!-- Mostrar credenciales temporales si es un usuario recién creado -->
+    {% if usuario_recien_creado %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h5 class="alert-heading"><i class="fas fa-user-check me-2"></i>Usuario creado exitosamente</h5>
+                <p class="mb-2">Se ha generado automáticamente el usuario para el {{ usuario_recien_creado.tipo }}:</p>
+                <ul class="mb-3">
+                    <li><strong>Usuario:</strong> {{ usuario_recien_creado.username }}</li>
+                    <li><strong>Email:</strong> {{ usuario_recien_creado.email }}</li>
+                    <li><strong>Contraseña temporal:</strong> <code>{{ usuario_recien_creado.password }}</code></li>
+                </ul>
+                <p class="mb-0"><small class="text-muted">Guarde esta información para entregarla al usuario. Por seguridad, esta ventana solo se muestra una vez.</small></p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
@@ -214,5 +234,6 @@
     font-size: 1.5rem;
 }
 </style>
+
 {% endblock %}
 
