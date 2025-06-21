@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mis Valoraciones{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 class="mb-0">
+                            <i class="fas fa-chart-line text-primary me-2"></i>
+                            Mis Valoraciones
+                        </h2>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if sin_perfil %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            No tienes un perfil de paciente configurado.
+                        </div>
+                    {% elif sin_paciente %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Tu usuario aún no está vinculado con un registro de paciente. 
+                            Contacta con tu nutricionista para completar la vinculación.
+                        </div>
+                    {% elif page_obj %}
+                        <!-- Información del paciente -->
+                        <div class="mb-4">
+                            <h5 class="text-info">
+                                <i class="fas fa-user me-2"></i>
+                                {{ paciente.nombre }} {{ paciente.apellidos }}
+                            </h5>
+                            <p class="text-muted mb-0">Total de valoraciones: {{ page_obj.paginator.count }}</p>
+                        </div>
+                        
+                        <!-- Lista de valoraciones -->
+                        <div class="row">
+                            {% for valoracion in page_obj %}
+                                <div class="col-lg-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-calendar me-2"></i>
+                                                {{ valoracion.fecha_creacion|date:"d/m/Y" }}
+                                            </h6>
+                                            <span class="badge bg-primary">{{ valoracion.fecha_creacion|timesince }}</span>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row text-center mb-3">
+                                                <div class="col-6">
+                                                    <h5 class="text-primary mb-0">{{ valoracion.peso_kg }} kg</h5>
+                                                    <small class="text-muted">Peso</small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h5 class="text-success mb-0">{{ valoracion.calorias_totales|default:"-" }}</h5>
+                                                    <small class="text-muted">Calorías</small>
+                                                </div>
+                                            </div>
+                                            
+                                            {% if valoracion.carbohidratos_g %}
+                                                <div class="row text-center mb-3">
+                                                    <div class="col-4">
+                                                        <div class="text-info">
+                                                            <strong>{{ valoracion.carbohidratos_g }}g</strong><br>
+                                                            <small>Carbohidratos</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="text-warning">
+                                                            <strong>{{ valoracion.proteinas_g }}g</strong><br>
+                                                            <small>Proteínas</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="text-danger">
+                                                            <strong>{{ valoracion.grasas_g }}g</strong><br>
+                                                            <small>Grasas</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            {% if valoracion.notas %}
+                                                <div class="mb-3">
+                                                    <strong>Notas:</strong>
+                                                    <p class="text-muted mb-0">{{ valoracion.notas|truncatewords:15 }}</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{% url 'mi_valoracion_detalle' valoracion.id %}" class="btn btn-primary btn-sm w-100">
+                                                <i class="fas fa-eye me-2"></i>
+                                                Ver Detalles
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Paginación -->
+                        {% if page_obj.has_other_pages %}
+                            <nav aria-label="Paginación">
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                                Anterior
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    
+                                    <li class="page-item active">
+                                        <span class="page-link">
+                                            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                                        </span>
+                                    </li>
+                                    
+                                    {% if page_obj.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                                Siguiente
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                            <h5>No tienes valoraciones aún</h5>
+                            <p class="text-muted">Cuando tu nutricionista cree valoraciones para ti, aparecerán aquí.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

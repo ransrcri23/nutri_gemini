@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva Valoración - {{ paciente.nombre }}{% endblock %}
+
+{% block breadcrumb %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'lista_pacientes' %}">Pacientes</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'detalle_paciente' paciente.id %}">{{ paciente.nombre }} {{ paciente.apellidos }}</a></li>
+            <li class="breadcrumb-item active">Nueva Valoración</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Patient Info Header -->
+        <div class="card card-custom mb-4">
+            <div class="card-header-custom">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">
+                            <i class="fas fa-weight me-2"></i>
+                            Nueva Valoración Corporal
+                        </h3>
+                        <p class="mb-0 mt-2 opacity-75">Paciente: {{ paciente.nombre }} {{ paciente.apellidos }} ({{ paciente.edad }} años)</p>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge bg-light text-dark fs-6">
+                            <i class="fas fa-ruler-vertical me-1"></i>{{ paciente.estatura }}m
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Valoración Form -->
+        <div class="card card-custom">
+            <div class="card-body p-4">
+                <form method="POST" id="valoracionForm">
+                    {% csrf_token %}
+                    
+                    <!-- Mediciones Físicas -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-weight me-2"></i>Mediciones Físicas
+                            </h5>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Importante:</strong> Los componentes corporales deben sumar el peso total (tolerancia: ±500g)
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="peso_kg" class="form-label">
+                                    <i class="fas fa-weight me-1"></i>Peso Total (kg) *
+                                </label>
+                                <input type="number" step="0.1" min="20" max="300" class="form-control" id="peso_kg" name="peso_kg" required>
+                                <div class="form-text">Peso corporal total en kilogramos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="litros_agua" class="form-label">
+                                    <i class="fas fa-tint me-1"></i>Agua Corporal (litros) *
+                                </label>
+                                <input type="number" step="0.1" min="10" max="80" class="form-control" id="litros_agua" name="litros_agua" required>
+                                <div class="form-text">Contenido de agua en el cuerpo</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="kg_grasa" class="form-label">
+                                    <i class="fas fa-circle me-1 text-warning"></i>Grasa Corporal (kg) *
+                                </label>
+                                <input type="number" step="0.1" min="1" max="100" class="form-control" id="kg_grasa" name="kg_grasa" required>
+                                <div class="form-text">Masa grasa del cuerpo</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="kg_proteinas" class="form-label">
+                                    <i class="fas fa-circle me-1 text-success"></i>Masa Muscular (kg) *
+                                </label>
+                                <input type="number" step="0.1" min="10" max="100" class="form-control" id="kg_proteinas" name="kg_proteinas" required>
+                                <div class="form-text">Masa muscular (proteínas)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="kg_minerales" class="form-label">
+                                    <i class="fas fa-circle me-1 text-info"></i>Minerales (kg) *
+                                </label>
+                                <input type="number" step="0.1" min="1" max="20" class="form-control" id="kg_minerales" name="kg_minerales" required>
+                                <div class="form-text">Contenido mineral óseo</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Validación en tiempo real -->
+                        <div class="col-12">
+                            <div id="validacion-componentes" class="alert alert-secondary d-none">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calculator me-2"></i>
+                                    <span id="suma-componentes">Suma de componentes: <strong>0 kg</strong></span>
+                                    <span class="ms-auto" id="diferencia-peso"></span>
+                                </div>
+                                <div class="progress mt-2" style="height: 8px;">
+                                    <div id="progress-validacion" class="progress-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Observaciones -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-sticky-note me-2"></i>Observaciones
+                            </h5>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="notas" class="form-label">
+                                    <i class="fas fa-comment me-1"></i>Notas del Nutricionista
+                                </label>
+                                <textarea class="form-control" id="notas" name="notas" rows="4" placeholder="Observaciones sobre la valoración, condición física del paciente, recomendaciones iniciales..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-secondary me-md-2">
+                                    <i class="fas fa-times me-1"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary-custom" id="btnSubmit">
+                                    <i class="fas fa-brain me-1"></i>Crear y Calcular Macronutrientes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Info Cards -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card" style="background: linear-gradient(135deg, #e8f5e8, #f0f8f0);">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-brain fa-2x text-success me-3"></i>
+                            <div>
+                                <h6 class="mb-1">Cálculo Automático</h6>
+                                <p class="mb-0 small text-muted">
+                                    Los macronutrientes se calcularán automáticamente usando IA 
+                                    basada en la información del paciente y estas mediciones.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card" style="background: linear-gradient(135deg, #e3f2fd, #f3e5f5);">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-alt fa-2x text-info me-3"></i>
+                            <div>
+                                <h6 class="mb-1">Validación Integrada</h6>
+                                <p class="mb-0 small text-muted">
+                                    El sistema valida que los componentes corporales 
+                                    sumen correctamente el peso total del paciente.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = {
+        peso: document.getElementById('peso_kg'),
+        grasa: document.getElementById('kg_grasa'),
+        proteinas: document.getElementById('kg_proteinas'),
+        minerales: document.getElementById('kg_minerales'),
+        agua: document.getElementById('litros_agua')
+    };
+    
+    const validacionDiv = document.getElementById('validacion-componentes');
+    const sumaSpan = document.getElementById('suma-componentes');
+    const diferenciaSpan = document.getElementById('diferencia-peso');
+    const progressBar = document.getElementById('progress-validacion');
+    const submitBtn = document.getElementById('btnSubmit');
+    
+    function validarComposicion() {
+        const peso = parseFloat(inputs.peso.value) || 0;
+        const grasa = parseFloat(inputs.grasa.value) || 0;
+        const proteinas = parseFloat(inputs.proteinas.value) || 0;
+        const minerales = parseFloat(inputs.minerales.value) || 0;
+        const agua = parseFloat(inputs.agua.value) || 0;
+        
+        const sumaComponentes = grasa + proteinas + minerales + agua;
+        const diferencia = Math.abs(sumaComponentes - peso);
+        const tolerancia = 0.5; // 500g
+        
+        // Mostrar la validación si hay valores
+        if (peso > 0 && sumaComponentes > 0) {
+            validacionDiv.classList.remove('d-none');
+            
+            sumaSpan.innerHTML = `Suma de componentes: <strong>${sumaComponentes.toFixed(1)} kg</strong>`;
+            
+            if (diferencia <= tolerancia) {
+                validacionDiv.className = 'alert alert-success';
+                diferenciaSpan.innerHTML = `<i class="fas fa-check-circle me-1"></i>Validación correcta`;
+                progressBar.className = 'progress-bar bg-success';
+                progressBar.style.width = '100%';
+                submitBtn.disabled = false;
+            } else {
+                validacionDiv.className = 'alert alert-warning';
+                diferenciaSpan.innerHTML = `<i class="fas fa-exclamation-triangle me-1"></i>Diferencia: ${diferencia.toFixed(1)} kg`;
+                progressBar.className = 'progress-bar bg-warning';
+                const progress = Math.max(0, 100 - (diferencia / peso * 100));
+                progressBar.style.width = progress + '%';
+                submitBtn.disabled = diferencia > tolerancia;
+            }
+        } else {
+            validacionDiv.classList.add('d-none');
+            submitBtn.disabled = false;
+        }
+    }
+    
+    // Agregar event listeners
+    Object.values(inputs).forEach(input => {
+        input.addEventListener('input', validarComposicion);
+    });
+    
+    // Validación inicial
+    validarComposicion();
+    
+    // Confirmar envío
+    document.getElementById('valoracionForm').addEventListener('submit', function(e) {
+        const peso = parseFloat(inputs.peso.value) || 0;
+        const sumaComponentes = (parseFloat(inputs.grasa.value) || 0) + 
+                               (parseFloat(inputs.proteinas.value) || 0) + 
+                               (parseFloat(inputs.minerales.value) || 0) + 
+                               (parseFloat(inputs.agua.value) || 0);
+        
+        if (Math.abs(sumaComponentes - peso) > 0.5) {
+            if (!confirm('Los componentes no suman exactamente el peso total. ¿Está seguro de continuar?')) {
+                e.preventDefault();
+            }
+        }
+        
+        // Cambiar texto del botón
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Calculando...';
+        submitBtn.disabled = true;
+    });
+});
+</script>
+{% endblock %}
+

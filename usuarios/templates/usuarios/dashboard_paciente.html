@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Paciente - Nutrición Asistente{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Welcome Header -->
+        <div class="card card-custom mb-4">
+            <div class="card-header-custom">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="mb-0">
+                            <i class="fas fa-user me-2"></i>
+                            Mi Panel Personal
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">Bienvenido {{ user.nombre_completo }}</p>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge bg-info fs-6">
+                            <i class="fas fa-user me-1"></i>Paciente
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if sin_perfil %}
+            <!-- Sin perfil -->
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Perfil no encontrado</strong><br>
+                No se ha encontrado tu perfil de paciente. Contacta con el administrador.
+            </div>
+        {% elif sin_paciente %}
+            <!-- Sin paciente vinculado -->
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="card card-custom">
+                        <div class="card-header text-center">
+                            <h4><i class="fas fa-info-circle me-2"></i>Cuenta Pendiente de Activación</h4>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="mb-4">Tu cuenta ha sido creada exitosamente, pero aún no has sido vinculado a un expediente de paciente.</p>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Cuenta pendiente:</strong>
+                                <p class="mb-0 mt-2">
+                                    Tu cuenta ha sido creada pero aún no se han vinculado tus datos médicos. 
+                                    Contacta con tu nutricionista para completar la configuración.
+                                </p>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <form method="post" action="{% url 'logout' %}" style="display: inline-block;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-secondary">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- Paciente vinculado -->
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stats-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
+                            <h3 class="text-success">{{ total_valoraciones|default:0 }}</h3>
+                            <p class="mb-0 small text-muted">Valoraciones Totales</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stats-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-injured fa-2x text-info mb-3"></i>
+                            <h3 class="text-info">{{ paciente.edad }}</h3>
+                            <p class="mb-0 small text-muted">Años</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stats-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-calendar-check fa-2x text-warning mb-3"></i>
+                            <h3 class="text-warning">{% if ultima_valoracion %}{{ ultima_valoracion.fecha_creacion|date:"d/m" }}{% else %}---{% endif %}</h3>
+                            <p class="mb-0 small text-muted">Última Valoración</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card stats-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-heartbeat fa-2x text-danger mb-3"></i>
+                            <h3 class="text-danger">{% if ultima_valoracion %}{{ ultima_valoracion.peso_kg|floatformat:1 }}{% else %}---{% endif %}</h3>
+                            <p class="mb-0 small text-muted">Último Peso (kg)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Mi Información</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4"><strong>Nombre:</strong></div>
+                                <div class="col-sm-8">{{ paciente.nombre }} {{ paciente.apellidos }}</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4"><strong>Edad:</strong></div>
+                                <div class="col-sm-8">{{ paciente.edad }} años</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4"><strong>Género:</strong></div>
+                                <div class="col-sm-8">{{ paciente.get_genero_display }}</div>
+                            </div>
+                            {% if paciente.alergias %}
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4"><strong>Alergias:</strong></div>
+                                <div class="col-sm-8">{{ paciente.alergias }}</div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'mis_valoraciones' %}" class="btn btn-primary-custom">
+                                    <i class="fas fa-chart-line me-2"></i>Ver Mis Valoraciones
+                                </a>
+                                {% if ultima_valoracion %}
+                                <a href="{% url 'mi_valoracion_detalle' ultima_valoracion.id %}" class="btn btn-info">
+                                    <i class="fas fa-eye me-2"></i>Última Valoración
+                                </a>
+                                {% endif %}
+                                <form method="post" action="{% url 'logout' %}" style="display: inline-block; width: 100%;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger w-100">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Valoraciones -->
+            {% if valoraciones %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Mis Valoraciones Recientes</h5>
+                        </div>
+                        <div class="card-body">
+                            {% for valoracion in valoraciones|slice:":5" %}
+                            <div class="d-flex align-items-center mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                                <div class="flex-shrink-0">
+                                    {% if valoracion.tiene_macronutrientes %}
+                                        <i class="fas fa-check-circle fa-lg text-success"></i>
+                                    {% else %}
+                                        <i class="fas fa-clock fa-lg text-warning"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="fw-bold">Valoración del {{ valoracion.fecha_creacion|date:"d/m/Y" }}</div>
+                                    <small class="text-muted">
+                                        Peso: {{ valoracion.peso_kg|floatformat:1 }} kg • 
+                                        Altura: {{ valoracion.altura_cm }} cm
+                                        {% if valoracion.tiene_macronutrientes %}
+                                            • <span class="text-success">Analizada</span>
+                                        {% else %}
+                                            • <span class="text-warning">Pendiente</span>
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{% url 'mi_valoracion_detalle' valoracion.id %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            {% if valoraciones.count > 5 %}
+                            <div class="text-center mt-3">
+                                <a href="{% url 'mis_valoraciones' %}" class="btn btn-outline-primary">
+                                    <i class="fas fa-list me-2"></i>Ver Todas las Valoraciones
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        <i class="fas fa-info-circle fa-2x mb-3"></i><br>
+                        <strong>Aún no tienes valoraciones</strong><br>
+                        Cuando tu nutricionista realice una valoración, aparecerá aquí.
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

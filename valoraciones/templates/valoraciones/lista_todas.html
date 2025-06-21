@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Valoraciones - Nutrición Asistente{% endblock %}
+
+{% block breadcrumb %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'lista_valoraciones' %}">Valoraciones</a></li>
+            <li class="breadcrumb-item active">Gestión Completa</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card card-custom">
+            <div class="card-header-custom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h2 class="mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>Gestión de Valoraciones
+                        </h2>
+                        <p class="mb-0 mt-1 opacity-75">Vista completa para nutricionistas y administradores</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div class="btn-group" role="group">
+                            <a href="?incluir_inactivos=false" class="btn {% if not incluir_inactivos %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                                <i class="fas fa-user-check me-1"></i>Solo Activos
+                            </a>
+                            <a href="?incluir_inactivos=true" class="btn {% if incluir_inactivos %}btn-warning{% else %}btn-outline-warning{% endif %} btn-sm">
+                                <i class="fas fa-users me-1"></i>Incluir Inactivos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if valoraciones %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
+                                    <th>Peso</th>
+                                    <th>Macros</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for valoracion in valoraciones %}
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <strong>{{ valoracion.paciente.nombre }} {{ valoracion.paciente.apellidos }}</strong>
+                                            <br><small class="text-muted">{{ valoracion.paciente.edad }} años</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if valoracion.paciente.activo %}
+                                            <span class="badge bg-success">Activo</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">Inactivo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small>{{ valoracion.fecha_creacion|date:"d/m/Y H:i" }}</small>
+                                    </td>
+                                    <td>
+                                        <strong>{{ valoracion.peso_kg }} kg</strong>
+                                    </td>
+                                    <td>
+                                        {% if valoracion.tiene_macronutrientes %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Calculados
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-warning">
+                                                <i class="fas fa-clock me-1"></i>Pendiente
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{% url 'detalle_valoracion' valoracion.id %}" class="btn btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-outline-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'detalle_paciente' valoracion.paciente.id %}" class="btn btn-outline-secondary">
+                                                <i class="fas fa-user"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-chart-bar fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">No hay valoraciones</h4>
+                        {% if incluir_inactivos %}
+                            <p class="text-muted">No se encontraron valoraciones (incluyendo pacientes inactivos)</p>
+                        {% else %}
+                            <p class="text-muted">No se encontraron valoraciones de pacientes activos</p>
+                        {% endif %}
+                        <a href="{% url 'lista_pacientes' %}" class="btn btn-primary">
+                            <i class="fas fa-users me-1"></i>Ver Pacientes
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

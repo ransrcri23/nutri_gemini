@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crear Usuario{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h2 class="mb-0">
+                            <i class="fas fa-user-plus text-primary me-2"></i>
+                            Crear Nuevo Usuario
+                        </h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="formCrearUsuario">
+                        {% csrf_token %}
+                        
+                        <!-- Datos Básicos -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                Datos Básicos
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="first_name" class="form-label">Nombre *</label>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_name" class="form-label">Apellidos *</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <small class="form-text text-muted">Se usará como nombre de usuario</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">Contraseña *</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="telefono" name="telefono">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tipo de Usuario -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-user-tag me-2"></i>
+                                Tipo de Usuario
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="tipo_usuario" class="form-label">Tipo *</label>
+                                    <select class="form-select" id="tipo_usuario" name="tipo_usuario" required>
+                                        <option value="">Seleccionar tipo...</option>
+                                        {% for valor, etiqueta in tipos_usuario %}
+                                            <option value="{{ valor }}">{{ etiqueta }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Datos Específicos para Nutricionista -->
+                        <div id="datosNutricionista" class="mb-4" style="display: none;">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-user-md me-2"></i>
+                                Datos Profesionales
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="numero_colegiado" class="form-label">Número Colegiado</label>
+                                    <input type="text" class="form-control" id="numero_colegiado" name="numero_colegiado">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="especialidad" class="form-label">Especialidad</label>
+                                    <input type="text" class="form-control" id="especialidad" name="especialidad">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="años_experiencia" class="form-label">Años de Experiencia</label>
+                                    <input type="number" class="form-control" id="años_experiencia" name="años_experiencia" min="0">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="biografia" class="form-label">Biografía</label>
+                                <textarea class="form-control" id="biografia" name="biografia" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                Crear Usuario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tipoSelect = document.getElementById('tipo_usuario');
+    const datosNutricionista = document.getElementById('datosNutricionista');
+    
+    tipoSelect.addEventListener('change', function() {
+        if (this.value === 'NUTRICIONISTA') {
+            datosNutricionista.style.display = 'block';
+        } else {
+            datosNutricionista.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}
+

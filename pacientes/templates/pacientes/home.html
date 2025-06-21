@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Nutrición Asistente{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Welcome Card -->
+        <div class="card card-custom text-center">
+            <div class="card-header-custom">
+                <i class="fas fa-apple-alt apple-icon"></i>
+                <h1 class="mb-0">🥗 Nutrición Asistente</h1>
+            </div>
+            <div class="card-body p-5">
+                <p class="lead text-muted mb-4">
+                    Bienvenido al sistema de gestión nutricional avanzado. Registra pacientes, 
+                    realiza valoraciones corporales completas y obtén recomendaciones de macronutrientes 
+                    personalizadas utilizando inteligencia artificial de Gemini.
+                </p>
+                
+                <!-- Action Buttons -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom btn-lg w-100">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Crear Nuevo Paciente
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'lista_pacientes' %}" class="btn btn-secondary-custom btn-lg w-100">
+                            <i class="fas fa-users me-2"></i>
+                            Ver Pacientes
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <a href="{% url 'lista_valoraciones' %}" class="btn btn-outline-success btn-lg w-100">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Ver Valoraciones
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="/admin/" class="btn btn-outline-info btn-lg w-100">
+                            <i class="fas fa-cog me-2"></i>
+                            Administración
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Cards -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card stats-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-md fa-2x text-primary mb-3"></i>
+                        <h5>Gestión de Pacientes</h5>
+                        <p class="text-muted small">Registra información completa de pacientes incluyendo datos médicos y objetivos nutricionales.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stats-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-weight fa-2x text-success mb-3"></i>
+                        <h5>Valoraciones Corporales</h5>
+                        <p class="text-muted small">Registra mediciones precisas de composición corporal con validación automática.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stats-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-brain fa-2x text-info mb-3"></i>
+                        <h5>IA Nutricional</h5>
+                        <p class="text-muted small">Cálculos automáticos de macronutrientes personalizados usando Gemini AI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

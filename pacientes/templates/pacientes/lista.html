@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+
+{% block title %}Pacientes - Nutrición Asistente{% endblock %}
+
+{% block breadcrumb %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            <li class="breadcrumb-item active">Pacientes</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Header con Búsqueda -->
+        <div class="card card-custom">
+            <div class="card-header-custom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h2 class="mb-0">
+                            <i class="fas fa-users me-2"></i>
+                            Pacientes Registrados
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">Gestiona todos los pacientes del sistema</p>
+                    </div>
+                    <div class="col-md-6">
+                        <form method="GET" class="d-flex gap-2">
+                            <input type="search" name="q" value="{{ query }}" class="form-control" placeholder="Buscar por nombre, apellidos, email...">
+                            <button type="submit" class="btn btn-light">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats y Acción -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h3 class="text-primary">{{ page_obj.paginator.count }}</h3>
+                                <p class="mb-0 small text-muted">Pacientes Activos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h3 class="text-success">{{ valoraciones_total|default:0 }}</h3>
+                                <p class="mb-0 small text-muted">Valoraciones Total</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body text-center">
+                                <h3 class="text-info">{{ page_obj.paginator.num_pages }}</h3>
+                                <p class="mb-0 small text-muted">Páginas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-grid gap-2 h-100">
+                    <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom btn-lg d-flex align-items-center justify-content-center">
+                        <i class="fas fa-user-plus me-2"></i>Nuevo Paciente
+                    </a>
+                    {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
+                        <a href="{% url 'lista_pacientes_todos' %}" class="btn btn-warning d-flex align-items-center justify-content-center">
+                            <i class="fas fa-users-cog me-2"></i>Gestión Completa
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lista de Pacientes -->
+        {% if page_obj %}
+            <div class="row">
+                {% for paciente in page_obj %}
+                <div class="col-xl-4 col-lg-6 mb-4">
+                    <div class="card card-custom h-100">
+                        <div class="card-body">
+                            <!-- Header del Paciente -->
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title mb-1">
+                                        <a href="{% url 'detalle_paciente' paciente.id %}" class="text-decoration-none">
+                                            {{ paciente.nombre }} {{ paciente.apellidos }}
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fas fa-birthday-cake me-1"></i>
+                                        {{ paciente.edad }} años • {{ paciente.estatura }}m
+                                    </p>
+                                </div>
+                                <div class="text-end">
+                                    {% if paciente.valoraciones.count %}
+                                        <span class="badge bg-success">
+                                            {{ paciente.valoraciones.count }} valoraciones
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">
+                                            Sin valoraciones
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Información de Contacto -->
+                            <div class="mb-3">
+                                {% if paciente.correo_electronico %}
+                                <div class="small text-muted mb-1">
+                                    <i class="fas fa-envelope me-1"></i>
+                                    {{ paciente.correo_electronico }}
+                                </div>
+                                {% endif %}
+                                {% if paciente.telefono %}
+                                <div class="small text-muted mb-1">
+                                    <i class="fas fa-phone me-1"></i>
+                                    {{ paciente.telefono }}
+                                </div>
+                                {% endif %}
+                                <div class="small text-muted">
+                                    <i class="fas fa-briefcase me-1"></i>
+                                    {{ paciente.ocupacion }}
+                                </div>
+                            </div>
+                            
+                            <!-- Deportes y Ejercicio -->
+                            <div class="mb-3">
+                                <div class="small">
+                                    <i class="fas fa-dumbbell me-1 text-success"></i>
+                                    <strong>Deportes:</strong> {{ paciente.deportes|truncatechars:30 }}
+                                </div>
+                                <div class="small text-muted">
+                                    <i class="fas fa-clock me-1"></i>
+                                    {{ paciente.horas_semana }}
+                                </div>
+                            </div>
+                            
+                            <!-- Objetivos -->
+                            <div class="mb-3">
+                                <div class="small text-muted">
+                                    <i class="fas fa-target me-1 text-primary"></i>
+                                    <strong>Objetivo:</strong> {{ paciente.objetivos|truncatechars:50 }}
+                                </div>
+                            </div>
+                            
+                            <!-- Alergias (si las hay) -->
+                            {% if paciente.alergias %}
+                            <div class="mb-3">
+                                <div class="alert alert-warning py-2 small">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    <strong>Alergias:</strong> {{ paciente.alergias|truncatechars:40 }}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Footer con Acciones -->
+                        <div class="card-footer bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ paciente.fecha_creacion|date:"d/m/Y" }}
+                                </small>
+                                <div>
+                                    <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>Ver
+                                    </a>
+                                    {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
+                                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit me-1"></i>Editar
+                                        </a>
+                                    {% endif %}
+                                    <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-plus me-1"></i>Valoración
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Paginación -->
+            {% if page_obj.has_other_pages %}
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="Paginación">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <!-- Empty State -->
+            <div class="card card-custom">
+                <div class="card-body text-center py-5">
+                    {% if query %}
+                        <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                        <h4 class="text-muted mb-3">No se encontraron pacientes</h4>
+                        <p class="text-muted mb-4">
+                            No hay pacientes que coincidan con "<strong>{{ query }}</strong>".
+                        </p>
+                        <a href="{% url 'lista_pacientes' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-times me-2"></i>Limpiar Búsqueda
+                        </a>
+                    {% else %}
+                        <i class="fas fa-users fa-4x text-muted mb-4"></i>
+                        <h4 class="text-muted mb-3">No hay pacientes registrados</h4>
+                        <p class="text-muted mb-4">
+                            Aún no tienes pacientes en el sistema. 
+                            Comienza creando tu primer paciente.
+                        </p>
+                        <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom">
+                            <i class="fas fa-user-plus me-2"></i>Crear Primer Paciente
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ usuario.nombre_completo }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h2 class="mb-0">
+                            <i class="fas fa-user text-primary me-2"></i>
+                            {{ usuario.nombre_completo }}
+                        </h2>
+                        <span class="badge bg-{{ usuario.tipo_usuario|yesno:'success,info,warning' }} ms-3">
+                            {{ usuario.get_tipo_usuario_display }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Información Básica -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Información Básica
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <strong>Email:</strong><br>
+                                <span class="text-muted">{{ usuario.email }}</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Nombre de usuario:</strong><br>
+                                <span class="text-muted">{{ usuario.username }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <strong>Teléfono:</strong><br>
+                                <span class="text-muted">{{ usuario.telefono|default:"-" }}</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Fecha de nacimiento:</strong><br>
+                                <span class="text-muted">{{ usuario.fecha_nacimiento|date:"d/m/Y"|default:"-" }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <strong>Fecha de registro:</strong><br>
+                                <span class="text-muted">{{ usuario.fecha_creacion|date:"d/m/Y H:i" }}</span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <strong>Estado:</strong><br>
+                                {% if usuario.activo %}
+                                    <span class="badge bg-success">Activo</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactivo</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Información Específica -->
+                    {% if usuario.tipo_usuario == 'NUTRICIONISTA' and perfil_nutricionista %}
+                        <div class="mb-4">
+                            <h5 class="text-success mb-3">
+                                <i class="fas fa-user-md me-2"></i>
+                                Datos Profesionales
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <strong>Número Colegiado:</strong><br>
+                                    <span class="text-muted">{{ perfil_nutricionista.numero_colegiado|default:"-" }}</span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Especialidad:</strong><br>
+                                    <span class="text-muted">{{ perfil_nutricionista.especialidad|default:"-" }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <strong>Años de Experiencia:</strong><br>
+                                    <span class="text-muted">{{ perfil_nutricionista.años_experiencia|default:"0" }} años</span>
+                                </div>
+                            </div>
+                            
+                            {% if perfil_nutricionista.biografia %}
+                                <div class="mb-3">
+                                    <strong>Biografía:</strong><br>
+                                    <p class="text-muted">{{ perfil_nutricionista.biografia }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if usuario.tipo_usuario == 'PACIENTE' and perfil_paciente %}
+                        <div class="mb-4">
+                            <h5 class="text-info mb-3">
+                                <i class="fas fa-user-injured me-2"></i>
+                                Datos de Paciente
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <strong>Paciente Vinculado:</strong><br>
+                                    {% if perfil_paciente.paciente %}
+                                        <span class="text-success">
+                                            <i class="fas fa-check me-1"></i>
+                                            {{ perfil_paciente.paciente.nombre }} {{ perfil_paciente.paciente.apellidos }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-warning">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            Sin vincular
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Volver a la Lista
+                        </a>
+                        
+                        <div>
+                            {% if usuario.tipo_usuario == 'PACIENTE' and not perfil_paciente.paciente %}
+                                <div class="alert alert-info me-2" role="alert">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    <strong>Nota:</strong> Los usuarios de pacientes ahora se crean automáticamente junto con los datos del paciente.
+                                </div>
+                            {% endif %}
+                            
+                            <form method="post" action="{% url 'toggle_usuario_activo' usuario.id %}" 
+                                  class="d-inline" onsubmit="return confirm('¿Confirmar cambio de estado?')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-{{ usuario.activo|yesno:'danger,success' }}">
+                                    <i class="fas fa-{{ usuario.activo|yesno:'ban,check' }} me-2"></i>
+                                    {{ usuario.activo|yesno:'Desactivar,Activar' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        Estadísticas
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <div class="avatar-lg mb-3">
+                            <span class="avatar-title bg-primary rounded-circle">
+                                {{ usuario.first_name|first }}{{ usuario.last_name|first }}
+                            </span>
+                        </div>
+                        
+                        <h6>{{ usuario.nombre_completo }}</h6>
+                        <p class="text-muted">{{ usuario.get_tipo_usuario_display }}</p>
+                        
+                        <hr>
+                        
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <h5 class="mb-0">{{ usuario.fecha_creacion|timesince }}</h5>
+                                <small class="text-muted">en el sistema</small>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="mb-0">{{ usuario.last_login|timesince|default:"Nunca" }}</h5>
+                                <small class="text-muted">última conexión</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-lg {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.avatar-title {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+    font-size: 1.5rem;
+}
+</style>
+{% endblock %}
+

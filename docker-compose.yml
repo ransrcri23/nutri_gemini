@@ -1,0 +1,24 @@
+services:
+  # Aplicación Django (usando Railway PostgreSQL)
+  web:
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=${DEBUG:-1}
+      - DJANGO_SETTINGS_MODULE=nutricion_asistente.settings
+      - DATABASE_URL=postgresql://postgres:JyVlHYwbEzHjJcEdiMreERWdnDxIqvUZ@centerbeam.proxy.rlwy.net:16897/railway
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - media_files:/app/media
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  media_files:
+

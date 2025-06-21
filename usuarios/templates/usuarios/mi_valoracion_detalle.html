@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Valoración del {{ valoracion.fecha_creacion|date:"d/m/Y" }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <a href="{% url 'mis_valoraciones' %}" class="btn btn-outline-secondary me-3">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h2 class="mb-0">
+                            <i class="fas fa-chart-line text-primary me-2"></i>
+                            Valoración del {{ valoracion.fecha_creacion|date:"d/m/Y" }}
+                        </h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Composición Corporal -->
+                    <div class="mb-5">
+                        <h5 class="text-primary mb-4">
+                            <i class="fas fa-user-circle me-2"></i>
+                            Composición Corporal
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card bg-light h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-weight fa-2x text-primary mb-2"></i>
+                                        <h4 class="text-primary mb-1">{{ valoracion.peso_kg }} kg</h4>
+                                        <small class="text-muted">Peso Total</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card bg-light h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                                        <h4 class="text-info mb-1">{{ valoracion.litros_agua }} L</h4>
+                                        <small class="text-muted">Agua Corporal</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-fire text-danger mb-2"></i>
+                                    <h6 class="text-danger mb-1">{{ valoracion.kg_grasa }} kg</h6>
+                                    <small class="text-muted">Grasa</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-dumbbell text-warning mb-2"></i>
+                                    <h6 class="text-warning mb-1">{{ valoracion.kg_proteinas }} kg</h6>
+                                    <small class="text-muted">Músculo/Proteínas</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="text-center p-3 border rounded">
+                                    <i class="fas fa-bone text-secondary mb-2"></i>
+                                    <h6 class="text-secondary mb-1">{{ valoracion.kg_minerales }} kg</h6>
+                                    <small class="text-muted">Minerales/Huesos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recomendaciones Nutricionales -->
+                    {% if valoracion.carbohidratos_g %}
+                        <div class="mb-5">
+                            <h5 class="text-success mb-4">
+                                <i class="fas fa-utensils me-2"></i>
+                                Plan Nutricional Recomendado
+                            </h5>
+                            
+                            <div class="row">
+                                <div class="col-lg-6 mb-4">
+                                    <div class="card border-success">
+                                        <div class="card-header bg-success text-white text-center">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-fire me-2"></i>
+                                                {{ valoracion.calorias_totales }} kcal/día
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <small class="text-muted">Meta calórica diaria</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="card border-info">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-bread-slice text-info fa-2x mb-2"></i>
+                                                    <h5 class="text-info mb-1">{{ valoracion.carbohidratos_g }}g</h5>
+                                                    <small class="text-muted">Carbohidratos</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="card border-warning">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-drumstick-bite text-warning fa-lg mb-2"></i>
+                                                    <h6 class="text-warning mb-1">{{ valoracion.proteinas_g }}g</h6>
+                                                    <small class="text-muted">Proteínas</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="card border-danger">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-cheese text-danger fa-lg mb-2"></i>
+                                                    <h6 class="text-danger mb-1">{{ valoracion.grasas_g }}g</h6>
+                                                    <small class="text-muted">Grasas</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Recomendaciones -->
+                    {% if valoracion.notas %}
+                        <div class="mb-4">
+                            <h5 class="text-info mb-3">
+                                <i class="fas fa-sticky-note me-2"></i>
+                                Recomendaciones
+                            </h5>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <p class="mb-0">{{ valoracion.recomendaciones|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Notas del Nutricionista -->
+                    {% if valoracion.notas %}
+                        <div class="mb-4">
+                            <h5 class="text-info mb-3">
+                                <i class="fas fa-sticky-note me-2"></i>
+                                Notas del Nutricionista
+                            </h5>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <p class="mb-0">{{ valoracion.notas|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Información de la Valoración -->
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-muted mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Información de la Valoración
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Fecha de creación:</strong><br>
+                                    <span class="text-muted">{{ valoracion.fecha_creacion|date:"d/m/Y H:i" }}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Hace:</strong><br>
+                                    <span class="text-muted">{{ valoracion.fecha_creacion|timesince }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'mis_valoraciones' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Volver a Mis Valoraciones
+                        </a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-home me-2"></i>
+                            Ir al Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel Lateral con Resumen -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie text-primary me-2"></i>
+                        Resumen
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Progreso visual (simulado) -->
+                    {% if valoracion.carbohidratos_g %}
+                        <div class="mb-4">
+                            <h6 class="text-center mb-3">Distribución de Macronutrientes</h6>
+                            <div class="text-center">
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-info">Carbohidratos</span>
+                                        <strong>{{ valoracion.carbohidratos_g }}g</strong>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-info" style="width: 55%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-warning">Proteínas</span>
+                                        <strong>{{ valoracion.proteinas_g }}g</strong>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-warning" style="width: 25%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-danger">Grasas</span>
+                                        <strong>{{ valoracion.grasas_g }}g</strong>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-danger" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Composición Corporal en Porcentajes -->
+                    <div class="mb-4">
+                        <h6 class="text-center mb-3">Composición Corporal</h6>
+                        <div class="row text-center">
+                            <div class="col-6 mb-2">
+                                <div class="text-danger">
+                                    <strong>{{ valoracion.kg_grasa|floatformat:1 }}kg</strong><br>
+                                    <small>Grasa</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <div class="text-warning">
+                                    <strong>{{ valoracion.kg_proteinas|floatformat:1 }}kg</strong><br>
+                                    <small>Músculo</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <div class="text-info">
+                                    <strong>{{ valoracion.litros_agua|floatformat:1 }}L</strong><br>
+                                    <small>Agua</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <div class="text-secondary">
+                                    <strong>{{ valoracion.kg_minerales|floatformat:1 }}kg</strong><br>
+                                    <small>Minerales</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <small class="text-muted">Valoración realizada el {{ valoracion.fecha_creacion|date:"d \de F \de Y" }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,461 @@
+{% extends 'base.html' %}
+
+{% block title %}Valoración de {{ valoracion.paciente.nombre }} - {{ valoracion.fecha_creacion|date:"d/m/Y" }}{% endblock %}
+
+{% block breadcrumb %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'lista_valoraciones' %}">Valoraciones</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'detalle_paciente' valoracion.paciente.id %}">{{ valoracion.paciente.nombre }} {{ valoracion.paciente.apellidos }}</a></li>
+            <li class="breadcrumb-item active">{{ valoracion.fecha_creacion|date:"d/m/Y" }}</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Estilos para el plan de comidas timeline */
+.plan-comidas .timeline {
+    position: relative;
+    padding-left: 0;
+}
+
+.plan-comidas .time-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.plan-comidas .time-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    width: 2px;
+    height: calc(100% + 10px);
+    background: #e9ecef;
+}
+
+.plan-comidas .time-hour {
+    min-width: 100px;
+    text-align: center;
+    margin-right: 1rem;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.plan-comidas .time-content {
+    flex: 1;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 3px solid #28a745;
+}
+
+.plan-comidas .macros-distribution .badge {
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.plan-comidas .daily-summary {
+    background: #e3f2fd;
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 4px solid #2196f3;
+    text-align: center;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Header de la Valoración -->
+        <div class="card card-custom">
+            <div class="card-header-custom">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Valoración Corporal
+                        </h3>
+                        <p class="mb-0 mt-2 opacity-75">
+                            {{ valoracion.paciente.nombre }} {{ valoracion.paciente.apellidos }} • 
+                            {{ valoracion.fecha_creacion|date:"d/m/Y H:i" }}
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        {% if valoracion.tiene_macronutrientes %}
+                            <span class="badge bg-success fs-6">
+                                <i class="fas fa-check me-1"></i>Completa
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning fs-6">
+                                <i class="fas fa-clock me-1"></i>Pendiente
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mediciones Físicas -->
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-weight me-2 text-success"></i>Mediciones Físicas
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="bg-light p-4 rounded-3 h-100">
+                            <i class="fas fa-weight fa-2x text-primary mb-2"></i>
+                            <h4 class="text-primary mb-1">{{ valoracion.peso_kg }} kg</h4>
+                            <small class="text-muted">Peso Total</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="bg-warning bg-opacity-10 p-4 rounded-3 h-100">
+                            <i class="fas fa-circle fa-2x text-warning mb-2"></i>
+                            <h4 class="text-warning mb-1">{{ valoracion.kg_grasa }} kg</h4>
+                            <small class="text-muted">Grasa Corporal</small>
+                            <div class="mt-1">
+                                <small class="badge bg-warning text-dark">
+                                    {% widthratio valoracion.kg_grasa valoracion.peso_kg 100 %}%
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="bg-success bg-opacity-10 p-4 rounded-3 h-100">
+                            <i class="fas fa-dumbbell fa-2x text-success mb-2"></i>
+                            <h4 class="text-success mb-1">{{ valoracion.kg_proteinas }} kg</h4>
+                            <small class="text-muted">Masa Muscular</small>
+                            <div class="mt-1">
+                                <small class="badge bg-success">
+                                    {% widthratio valoracion.kg_proteinas valoracion.peso_kg 100 %}%
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="bg-info bg-opacity-10 p-4 rounded-3 h-100">
+                            <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                            <h4 class="text-info mb-1">{{ valoracion.litros_agua }} L</h4>
+                            <small class="text-muted">Agua Corporal</small>
+                            <div class="mt-1">
+                                <small class="badge bg-info">
+                                    {% widthratio valoracion.litros_agua valoracion.peso_kg 100 %}%
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Minerales -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="bg-secondary bg-opacity-10 p-3 rounded text-center">
+                            <strong class="text-secondary">
+                                <i class="fas fa-bone me-1"></i>
+                                Minerales: {{ valoracion.kg_minerales }} kg
+                                ({% widthratio valoracion.kg_minerales valoracion.peso_kg 100 %}%)
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Macronutrientes -->
+        {% if valoracion.tiene_macronutrientes %}
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-apple-alt me-2 text-primary"></i>Macronutrientes Recomendados
+                    <small class="text-muted ms-2">Calculados por Gemini AI</small>
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Calorías Totales -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="bg-danger bg-opacity-10 p-4 rounded-3 text-center">
+                            <i class="fas fa-fire fa-3x text-danger mb-2"></i>
+                            <h2 class="text-danger mb-1">{{ valoracion.calorias_totales }} kcal</h2>
+                            <p class="text-muted mb-0">Calorías Diarias Recomendadas</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Desglose de Macros -->
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="bg-primary bg-opacity-10 p-4 rounded-3 h-100">
+                            <i class="fas fa-bread-slice fa-2x text-primary mb-2"></i>
+                            <h4 class="text-primary mb-1">{{ valoracion.carbohidratos_g }}g</h4>
+                            <small class="text-muted">Carbohidratos</small>
+                            <div class="mt-2">
+                                <small class="badge bg-primary">
+                                    {% widthratio valoracion.carbohidratos_g valoracion.calorias_totales 400 %}% de calorías
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="bg-success bg-opacity-10 p-4 rounded-3 h-100">
+                            <i class="fas fa-drumstick-bite fa-2x text-success mb-2"></i>
+                            <h4 class="text-success mb-1">{{ valoracion.proteinas_g }}g</h4>
+                            <small class="text-muted">Proteínas</small>
+                            <div class="mt-2">
+                                <small class="badge bg-success">
+                                    {% widthratio valoracion.proteinas_g valoracion.calorias_totales 400 %}% de calorías
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="bg-warning bg-opacity-10 p-4 rounded-3 h-100">
+                            <i class="fas fa-seedling fa-2x text-warning mb-2"></i>
+                            <h4 class="text-warning mb-1">{{ valoracion.grasas_g }}g</h4>
+                            <small class="text-muted">Grasas</small>
+                            <div class="mt-2">
+                                <small class="badge bg-warning text-dark">
+                                    {% widthratio valoracion.grasas_g valoracion.calorias_totales 900 %}% de calorías
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recomendaciones -->
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-lightbulb me-2 text-warning"></i>Recomendaciones Nutricionales
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-4 rounded-3">
+                    <p class="mb-0" style="white-space: pre-line;">{{ valoracion.recomendaciones }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Plan de Comidas -->
+        {% if valoracion.plan_comidas %}
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-clock me-2 text-success"></i>Plan de Comidas Diarias
+                    <small class="text-muted ms-2">Horarios y macronutrientes por comida</small>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-4 rounded-3">
+                    {{ valoracion.plan_comidas|safe }}
+                </div>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Este plan muestra los horarios recomendados para cada comida y la distribución de macronutrientes.
+                        Sigue estos horarios para optimizar tu nutrición diaria.
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Tabla de Equivalencias -->
+        {% if valoracion.tabla_equivalencias %}
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-table me-2 text-info"></i>Tabla de Equivalencias Funcionales
+                    <small class="text-muted ms-2">Personalizada para este paciente</small>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-4 rounded-3">
+                    {{ valoracion.tabla_equivalencias|safe }}
+                </div>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Esta tabla muestra las cantidades de alimentos que aportan porciones estándar de cada macronutriente.
+                        Úsala como guía para planificar tus comidas diarias.
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+        
+        <!-- Notas -->
+        {% if valoracion.notas %}
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-sticky-note me-2 text-secondary"></i>Notas del Nutricionista
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-3 rounded">
+                    <p class="mb-0" style="white-space: pre-line;">{{ valoracion.notas }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Acciones -->
+         {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Acciones</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    {% if not valoracion.tiene_macronutrientes %}
+                    <form method="post" action="{% url 'recalcular_macronutrientes' valoracion.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary-custom w-100">
+                            <i class="fas fa-brain me-2"></i>Calcular Macronutrientes
+                        </button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'recalcular_macronutrientes' valoracion.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning w-100">
+                            <i class="fas fa-sync-alt me-2"></i>Recalcular Todo
+                        </button>
+                    </form>
+                    
+                    {% if valoracion.plan_comidas %}
+                    <form method="post" action="{% url 'regenerar_plan_comidas' valoracion.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-clock me-2"></i>Regenerar Plan
+                        </button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if valoracion.tabla_equivalencias %}
+                    <form method="post" action="{% url 'regenerar_tabla_equivalencias' valoracion.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info w-100">
+                            <i class="fas fa-table me-2"></i>Regenerar Tabla
+                        </button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
+                    
+                    <a href="{% url 'crear_valoracion' valoracion.paciente.id %}" class="btn btn-secondary-custom">
+                        <i class="fas fa-plus me-2"></i>Nueva Valoración
+                    </a>
+                    
+                    {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
+                        <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-warning">
+                            <i class="fas fa-edit me-2"></i>Editar Valoración
+                        </a>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <a href="{% url 'valoraciones_paciente' valoracion.paciente.id %}" class="btn btn-outline-primary">
+                        <i class="fas fa-history me-2"></i>Historial del Paciente
+                    </a>
+                    
+                    <a href="{% url 'detalle_paciente' valoracion.paciente.id %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-user me-2"></i>Ver Paciente
+                    </a>
+                    
+                    <a href="{% url 'lista_valoraciones' %}" class="btn btn-outline-info">
+                        <i class="fas fa-arrow-left me-2"></i>Todas las Valoraciones
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- Info del Paciente -->
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user me-2"></i>Información del Paciente
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <strong>Edad:</strong> {{ valoracion.paciente.edad }} años
+                </div>
+                <div class="mb-2">
+                    <strong>Estatura:</strong> {{ valoracion.paciente.estatura }}m
+                </div>
+                <div class="mb-2">
+                    <strong>Ocupación:</strong> {{ valoracion.paciente.ocupacion }}
+                </div>
+                <div class="mb-2">
+                    <strong>Deportes:</strong> {{ valoracion.paciente.deportes }}
+                </div>
+                <div class="mb-2">
+                    <strong>Ejercicio:</strong> {{ valoracion.paciente.horas_semana }}
+                </div>
+                
+                {% if valoracion.paciente.alergias %}
+                <div class="mt-3">
+                    <div class="alert alert-warning py-2">
+                        <strong><i class="fas fa-exclamation-triangle me-1"></i>Alergias:</strong><br>
+                        <small>{{ valoracion.paciente.alergias }}</small>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="mt-3">
+                    <div class="alert alert-info py-2">
+                        <strong><i class="fas fa-target me-1"></i>Objetivos:</strong><br>
+                        <small>{{ valoracion.paciente.objetivos }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Metadatos -->
+        <div class="card card-custom">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Metadatos
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <strong>Creada:</strong><br>
+                    <small class="text-muted">{{ valoracion.fecha_creacion|date:"d/m/Y H:i:s" }}</small>
+                </div>
+                <div class="mb-2">
+                    <strong>Última actualización:</strong><br>
+                    <small class="text-muted">{{ valoracion.fecha_actualizacion|date:"d/m/Y H:i:s" }}</small>
+                </div>
+                {% if valoracion.tiene_macronutrientes %}
+                <div class="mt-3">
+                    <div class="badge bg-success w-100 p-2">
+                        <i class="fas fa-robot me-1"></i>Procesado por Gemini AI
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
