@@ -17,13 +17,6 @@
    ```bash
    copy example.env .env
    ```
-   
-   Editar el archivo `.env` y reemplazar:
-   ```
-   GOOGLE_API_KEY=YOUR_GOOGLE_GEMINI_API_KEY_HERE
-   ```
-   
-   Con tu clave de API de Google Gemini (obtener en: https://makersuite.google.com/app/apikey)
 
 3. **Iniciar la aplicación**
    ```bash
