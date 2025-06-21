@@ -18,59 +18,162 @@
 {% block extra_css %}
 <style>
 /* Estilos para el plan de comidas timeline */
+.plan-comidas {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
 .plan-comidas .timeline {
     position: relative;
     padding-left: 0;
+    margin: 0;
 }
 
 .plan-comidas .time-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     position: relative;
+    padding: 0;
 }
 
 .plan-comidas .time-item:not(:last-child)::before {
     content: '';
     position: absolute;
-    left: 20px;
-    top: 40px;
-    width: 2px;
-    height: calc(100% + 10px);
-    background: #e9ecef;
+    left: 50px;
+    top: 60px;
+    width: 3px;
+    height: calc(100% + 15px);
+    background: linear-gradient(180deg, #28a745, #20c997);
+    border-radius: 2px;
+    z-index: 0;
 }
 
 .plan-comidas .time-hour {
-    min-width: 100px;
+    min-width: 120px;
+    max-width: 120px;
     text-align: center;
-    margin-right: 1rem;
-    background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    padding: 0.5rem;
+    margin-right: 1.5rem;
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+    border: 2px solid #28a745;
+    border-radius: 15px;
+    padding: 0.75rem 0.5rem;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+    transition: all 0.3s ease;
+}
+
+.plan-comidas .time-hour:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
+}
+
+.plan-comidas .time-hour i {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.plan-comidas .time-hour .fw-bold {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #28a745;
 }
 
 .plan-comidas .time-content {
     flex: 1;
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 1rem;
-    border-left: 3px solid #28a745;
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+    border-radius: 15px;
+    padding: 1.25rem;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.plan-comidas .time-content:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.plan-comidas .time-content h6 {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.plan-comidas .time-content h6 i {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.plan-comidas .macros-distribution {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .plan-comidas .macros-distribution .badge {
-    margin-right: 0.25rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .plan-comidas .daily-summary {
-    background: #e3f2fd;
-    border-radius: 10px;
-    padding: 1rem;
-    border-left: 4px solid #2196f3;
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 2px solid #2196f3;
     text-align: center;
+    margin-top: 2rem;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+}
+
+.plan-comidas .daily-summary h6 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1976d2;
+}
+
+.plan-comidas .daily-summary .macros-distribution {
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.plan-comidas .daily-summary .badge {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .plan-comidas .time-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .plan-comidas .time-hour {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        align-self: flex-start;
+        min-width: auto;
+        max-width: 150px;
+    }
+    
+    .plan-comidas .time-item:not(:last-child)::before {
+        display: none;
+    }
+    
+    .plan-comidas .macros-distribution {
+        justify-content: flex-start;
+    }
 }
 </style>
 {% endblock %}
