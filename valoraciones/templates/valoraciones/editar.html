@@ -152,11 +152,11 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="plan_comidas" class="form-label">
-                                    <i class="fas fa-clock me-1"></i>Plan de Comidas (HTML)
+                                    <i class="fas fa-clock me-1"></i>Plan de Comidas
                                 </label>
-                                <textarea class="form-control" id="plan_comidas" name="plan_comidas" rows="6" placeholder="Código HTML del plan de comidas diarias...">{{ valoracion.plan_comidas|default:'' }}</textarea>
+                                <textarea class="form-control" id="plan_comidas" name="plan_comidas" rows="8" placeholder="Plan de comidas diarias en formato de texto legible...">{{ plan_comidas_texto|default:'' }}</textarea>
                                 <div class="form-text">
-                                    <i class="fas fa-info-circle me-1"></i>Este plan es generado automáticamente por IA, pero puede editarse manualmente si es necesario.
+                                    <i class="fas fa-info-circle me-1"></i>Este plan es generado automáticamente por IA y se muestra en formato de texto legible para facilitar la edición.
                                 </div>
                             </div>
                         </div>
@@ -164,11 +164,11 @@
                         <div class="col-12">
                             <div class="mb-3">
                                 <label for="tabla_equivalencias" class="form-label">
-                                    <i class="fas fa-table me-1"></i>Tabla de Equivalencias (HTML)
+                                    <i class="fas fa-table me-1"></i>Tabla de Equivalencias
                                 </label>
-                                <textarea class="form-control" id="tabla_equivalencias" name="tabla_equivalencias" rows="6" placeholder="Código HTML de la tabla de equivalencias funcionales...">{{ valoracion.tabla_equivalencias|default:'' }}</textarea>
+                                <textarea class="form-control" id="tabla_equivalencias" name="tabla_equivalencias" rows="8" placeholder="Tabla de equivalencias funcionales en formato de texto legible...">{{ tabla_equivalencias_texto|default:'' }}</textarea>
                                 <div class="form-text">
-                                    <i class="fas fa-info-circle me-1"></i>Esta tabla es generada automáticamente por IA, pero puede editarse manualmente si es necesario.
+                                    <i class="fas fa-info-circle me-1"></i>Esta tabla es generada automáticamente por IA y se muestra en formato de texto legible para facilitar la edición.
                                 </div>
                             </div>
                         </div>
