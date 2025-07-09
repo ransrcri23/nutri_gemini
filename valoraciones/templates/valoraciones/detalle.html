@@ -441,51 +441,17 @@
                     <form method="post" action="{% url 'recalcular_macronutrientes' valoracion.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-warning w-100">
-                            <i class="fas fa-sync-alt me-2"></i>Recalcular Todo
-                        </button>
-                    </form>
-                    
-                    {% if valoracion.plan_comidas %}
-                    <form method="post" action="{% url 'regenerar_plan_comidas' valoracion.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="fas fa-clock me-2"></i>Regenerar Plan
+                            <i class="fas fa-sync-alt me-2"></i>Recalcular
                         </button>
                     </form>
                     {% endif %}
                     
-                    {% if valoracion.tabla_equivalencias %}
-                    <form method="post" action="{% url 'regenerar_tabla_equivalencias' valoracion.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-info w-100">
-                            <i class="fas fa-table me-2"></i>Regenerar Tabla
-                        </button>
-                    </form>
-                    {% endif %}
-                    {% endif %}
-                    
-                    <a href="{% url 'crear_valoracion' valoracion.paciente.id %}" class="btn btn-secondary-custom">
-                        <i class="fas fa-plus me-2"></i>Nueva Valoración
+                    <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-outline-warning w-100">
+                        <i class="fas fa-edit me-2"></i>Editar
                     </a>
                     
-                    {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
-                        <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-warning">
-                            <i class="fas fa-edit me-2"></i>Editar Valoración
-                        </a>
-                    {% endif %}
-                    
-                    <hr>
-                    
-                    <a href="{% url 'valoraciones_paciente' valoracion.paciente.id %}" class="btn btn-outline-primary">
-                        <i class="fas fa-history me-2"></i>Historial del Paciente
-                    </a>
-                    
-                    <a href="{% url 'detalle_paciente' valoracion.paciente.id %}" class="btn btn-outline-secondary">
-                        <i class="fas fa-user me-2"></i>Ver Paciente
-                    </a>
-                    
-                    <a href="{% url 'lista_valoraciones' %}" class="btn btn-outline-info">
-                        <i class="fas fa-arrow-left me-2"></i>Todas las Valoraciones
+                    <a href="{% url 'lista_valoraciones' %}" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Volver
                     </a>
                 </div>
             </div>
@@ -530,32 +496,6 @@
                         <small>{{ valoracion.paciente.objetivos }}</small>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Metadatos -->
-        <div class="card card-custom">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="fas fa-info-circle me-2"></i>Metadatos
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-2">
-                    <strong>Creada:</strong><br>
-                    <small class="text-muted">{{ valoracion.fecha_creacion|date:"d/m/Y H:i:s" }}</small>
-                </div>
-                <div class="mb-2">
-                    <strong>Última actualización:</strong><br>
-                    <small class="text-muted">{{ valoracion.fecha_actualizacion|date:"d/m/Y H:i:s" }}</small>
-                </div>
-                {% if valoracion.tiene_macronutrientes %}
-                <div class="mt-3">
-                    <div class="badge bg-success w-100 p-2">
-                        <i class="fas fa-robot me-1"></i>Procesado por Gemini AI
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard Nutricionista - Nutrición Asistente{% endblock %}
+{% block title %}Dashboard Nutricionista - Nutri Gemini{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -27,7 +27,7 @@
         
         <!-- Stats Cards -->
         <div class="row mb-4">
-            <div class="col-lg-3 col-md-6 mb-3">
+            <div class="col-md-6 mb-3">
                 <div class="card stats-card h-100">
                     <div class="card-body text-center">
                         <i class="fas fa-user-injured fa-2x text-info mb-3"></i>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-3">
+            <div class="col-md-6 mb-3">
                 <div class="card stats-card h-100">
                     <div class="card-body text-center">
                         <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
@@ -45,84 +45,37 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card stats-card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-clock fa-2x text-warning mb-3"></i>
-                        <h3 class="text-warning">{{ valoraciones_pendientes }}</h3>
-                        <p class="mb-0 small text-muted">Pendientes Análisis</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card stats-card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-calendar-day fa-2x text-primary mb-3"></i>
-                        <h3 class="text-primary">Hoy</h3>
-                        <p class="mb-0 small text-muted">{{ today|date:"d/m/Y" }}</p>
-                    </div>
-                </div>
-            </div>
         </div>
         
-        <!-- Quick Actions -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card card-custom">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="{% url 'crear_paciente' %}" class="btn btn-success">
-                                <i class="fas fa-user-plus me-2"></i>Crear Paciente
-                            </a>
-                            <a href="{% url 'lista_pacientes' %}" class="btn btn-primary-custom">
-                                <i class="fas fa-list me-2"></i>Ver Pacientes
-                            </a>
-                            <a href="{% url 'lista_valoraciones' %}" class="btn btn-info">
-                                <i class="fas fa-chart-line me-2"></i>Ver Valoraciones
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6">
-                <div class="card card-custom">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Navegación Rápida</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 mb-2">
-                                <a href="{% url 'lista_pacientes' %}" class="btn btn-outline-primary w-100">
-                                    <i class="fas fa-list me-1"></i>Pacientes
-                                </a>
-                            </div>
-                            <div class="col-6 mb-2">
-                                <a href="{% url 'lista_valoraciones' %}" class="btn btn-outline-success w-100">
-                                    <i class="fas fa-chart-line me-1"></i>Valoraciones
-                                </a>
-                            </div>
-                            <div class="col-6 mb-2">
-                                <a href="{% url 'lista_pacientes' %}" class="btn btn-outline-info w-100" title="Selecciona un paciente para crear valoración">
-                                    <i class="fas fa-plus me-1"></i>Nueva Valoración
-                                </a>
-                            </div>
-                            <div class="col-6 mb-2">
-                                <form method="post" action="{% url 'logout' %}" style="display: inline-block; width: 100%;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-danger w-100" style="border: 1px solid #dc3545;">
-                                        <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        			<!-- Acciones Principales -->
+        			<div class="row mb-4">
+        			    <div class="col-12">
+        			        <div class="card card-custom">
+        			            <div class="card-header">
+        			                <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Principales</h5>
+        			            </div>
+        			            <div class="card-body">
+        			                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <a href="{% url 'crear_paciente' %}" class="btn btn-success w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user-plus me-2"></i>Crear Paciente
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <a href="{% url 'lista_pacientes' %}" class="btn btn-primary-custom w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-users me-2"></i>Ver Pacientes
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <a href="{% url 'lista_valoraciones' %}" class="btn btn-info w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-chart-line me-2"></i>Valoraciones
+                                        </a>
+                                    </div>
+        			                </div>
+        			            </div>
+        			        </div>
+        			    </div>
+        			</div>
         
         <!-- Recent Activity -->
         <div class="row">

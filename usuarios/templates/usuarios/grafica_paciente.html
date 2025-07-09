@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Progreso de {{ paciente.nombre }} {{ paciente.apellidos }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chart-container {
+        position: relative;
+        margin: 20px 0;
+        height: 400px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <a href="{% url 'graficas_progreso' %}" class="btn btn-outline-secondary me-3">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h2 class="mb-0">
+                        <i class="fas fa-chart-line text-info me-2"></i>
+                        Progreso de {{ paciente.nombre }} {{ paciente.apellidos }}
+                    </h2>
+                </div>
+                <div class="card-body">
+
+                    <div class="chart-container">
+                        <canvas id="pesoChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="grasaMusculoChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const fechas = {{ datos_graficas.fechas|safe }};
+    const pesos = {{ datos_graficas.pesos|safe }};
+    const porcentajesGrasa = {{ datos_graficas.porcentajes_grasa|safe }};
+    const porcentajesMusculo = {{ datos_graficas.porcentajes_musculo|safe }};
+
+    const pesoCtx = document.getElementById('pesoChart').getContext('2d');
+    const grasaMusculoCtx = document.getElementById('grasaMusculoChart').getContext('2d');
+
+    new Chart(pesoCtx, {
+        type: 'line',
+        data: {
+            labels: fechas,
+            datasets: [{
+                label: 'Peso (kg)',
+                data: pesos,
+                borderColor: '#007bff',
+                fill: false,
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+        }
+    });
+
+    new Chart(grasaMusculoCtx, {
+        type: 'line',
+        data: {
+            labels: fechas,
+            datasets: [
+                {
+                    label: 'Grasa (%)',
+                    data: porcentajesGrasa,
+                    borderColor: '#dc3545',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'Músculo (%)',
+                    data: porcentajesMusculo,
+                    borderColor: '#28a745',
+                    fill: false,
+                    tension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+        }
+    });
+
+</script>
+{% endblock %}

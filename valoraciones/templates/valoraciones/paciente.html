@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}Valoraciones - Nutri Gemini{% endblock %}
+{% block title %}Valoraciones de {{ paciente.nombre }} {{ paciente.apellidos }}{% endblock %}
 
 {% block breadcrumb %}
 <div class="container-fluid">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'lista_pacientes' %}">Pacientes</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'detalle_paciente' paciente.id %}">{{ paciente.nombre }} {{ paciente.apellidos }}</a></li>
             <li class="breadcrumb-item active">Valoraciones</li>
         </ol>
     </nav>
@@ -23,20 +25,34 @@
                     <div class="col">
                         <h2 class="mb-0">
                             <i class="fas fa-chart-line me-2"></i>
-                            Valoraciones Corporales
+                            Valoraciones de {{ paciente.nombre }} {{ paciente.apellidos }}
                         </h2>
-                        <p class="mb-0 mt-2 opacity-75">Gestiona todas las valoraciones y mediciones corporales</p>
+                        <p class="mb-0 mt-2 opacity-75">Historial completo de valoraciones corporales</p>
                     </div>
                     <div class="col-auto">
                         <span class="badge bg-light text-dark fs-6">
-                            <i class="fas fa-list me-1"></i>{{ valoraciones.count }} total
+                            <i class="fas fa-list me-1"></i>{{ valoraciones.count }} valoración{{ valoraciones.count|pluralize:"es" }}
                         </span>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Valoraciones List -->
+        <!-- Botón Nueva Valoración -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Paciente
+                    </a>
+                    <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary-custom">
+                        <i class="fas fa-plus me-2"></i>Nueva Valoración
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lista de Valoraciones -->
         {% if valoraciones %}
             <div class="row">
                 {% for valoracion in valoraciones %}
@@ -46,15 +62,9 @@
                             <div class="row align-items-center">
                                 <div class="col">
                                     <h5 class="mb-0">
-                                        <i class="fas fa-user me-2 text-primary"></i>
-                                        <a href="{% url 'detalle_paciente' valoracion.paciente.id %}" class="text-decoration-none">
-                                            {{ valoracion.paciente.nombre }} {{ valoracion.paciente.apellidos }}
-                                        </a>
-                                    </h5>
-                                    <small class="text-muted">
-                                        <i class="fas fa-calendar me-1"></i>
+                                        <i class="fas fa-calendar me-2 text-primary"></i>
                                         {{ valoracion.fecha_creacion|date:"d/m/Y H:i" }}
-                                    </small>
+                                    </h5>
                                 </div>
                                 <div class="col-auto">
                                     {% if valoracion.tiene_macronutrientes %}
@@ -70,7 +80,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <!-- Mediciones Físicas Resumidas -->
+                            <!-- Mediciones Físicas -->
                             <div class="row mb-3">
                                 <div class="col">
                                     <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded">
@@ -86,7 +96,7 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <h6 class="text-info mb-2">
-                                        <i class="fas fa-apple-alt me-1"></i>Macronutrientes Calculados
+                                        <i class="fas fa-apple-alt me-1"></i>Macronutrientes
                                     </h6>
                                     <div class="row text-center">
                                         <div class="col-6 col-md-3">
@@ -131,8 +141,8 @@
                         <div class="card-footer bg-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    <i class="fas fa-user me-1"></i>
-                                    Edad: {{ valoracion.paciente.edad }} años
+                                    <i class="fas fa-clock me-1"></i>
+                                    {{ valoracion.fecha_actualizacion|date:"d/m/Y H:i" }}
                                 </small>
                                 <div>
                                     <a href="{% url 'detalle_valoracion' valoracion.id %}" class="btn btn-primary btn-sm">
@@ -142,14 +152,6 @@
                                         <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit me-1"></i>Editar
                                         </a>
-                                    {% endif %}
-                                    {% if not valoracion.tiene_macronutrientes %}
-                                    <form method="post" action="{% url 'recalcular_macronutrientes' valoracion.id %}" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-secondary btn-sm">
-                                            <i class="fas fa-calculator me-1"></i>Calcular
-                                        </button>
-                                    </form>
                                     {% endif %}
                                 </div>
                             </div>
@@ -165,15 +167,15 @@
                     <i class="fas fa-chart-line fa-4x text-muted mb-4"></i>
                     <h4 class="text-muted mb-3">No hay valoraciones registradas</h4>
                     <p class="text-muted mb-4">
-                        Aún no se han creado valoraciones corporales. 
-                        Primero necesitas tener pacientes registrados para poder crear valoraciones.
+                        Este paciente aún no tiene valoraciones corporales registradas.
+                        Crea la primera valoración para comenzar el seguimiento nutricional.
                     </p>
                     <div class="d-flex justify-content-center gap-3">
-                        <a href="{% url 'lista_pacientes' %}" class="btn btn-primary-custom">
-                            <i class="fas fa-users me-2"></i>Ver Pacientes
+                        <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary-custom">
+                            <i class="fas fa-plus me-2"></i>Crear Primera Valoración
                         </a>
-                        <a href="{% url 'crear_paciente' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-user-plus me-2"></i>Crear Paciente
+                        <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver al Paciente
                         </a>
                     </div>
                 </div>
@@ -182,4 +184,3 @@
     </div>
 </div>
 {% endblock %}
-

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard Paciente - Nutrición Asistente{% endblock %}
+{% block title %}Dashboard Paciente - Nutri Gemini{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -123,11 +123,6 @@
                                 <div class="col-sm-4"><strong>Edad:</strong></div>
                                 <div class="col-sm-8">{{ paciente.edad }} años</div>
                             </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-4"><strong>Género:</strong></div>
-                                <div class="col-sm-8">{{ paciente.get_genero_display }}</div>
-                            </div>
                             {% if paciente.alergias %}
                             <hr>
                             <div class="row">
@@ -149,6 +144,11 @@
                                 <a href="{% url 'mis_valoraciones' %}" class="btn btn-primary-custom">
                                     <i class="fas fa-chart-line me-2"></i>Ver Mis Valoraciones
                                 </a>
+                                {% if total_valoraciones > 0 %}
+                                <a href="{% url 'graficas_progreso' %}" class="btn btn-success">
+                                    <i class="fas fa-chart-bar me-2"></i>Mi Progreso
+                                </a>
+                                {% endif %}
                                 {% if ultima_valoracion %}
                                 <a href="{% url 'mi_valoracion_detalle' ultima_valoracion.id %}" class="btn btn-info">
                                     <i class="fas fa-eye me-2"></i>Última Valoración

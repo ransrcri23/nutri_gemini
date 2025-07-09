@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from .models import Paciente, PacienteNuevoB
 from usuarios.models import TipoUsuario, Usuario, PerfilPaciente
+from utils import es_nutricionista_o_admin
 from datetime import date
 import random
 import string
@@ -29,6 +30,8 @@ def home(request):
     return render(request, 'pacientes/home.html')
 
 
+@login_required
+@user_passes_test(es_nutricionista_o_admin)
 def lista_pacientes(request):
     """Lista todos los pacientes activos con paginación y búsqueda"""
     query = request.GET.get('q')
@@ -193,12 +196,6 @@ def generar_usuario_para_paciente(paciente):
 
 
 # === FUNCIONES PARA NUTRICIONISTAS Y ADMINISTRADORES ===
-
-def es_nutricionista_o_admin(user):
-    """Verifica si el usuario es nutricionista o administrador"""
-    if not user.is_authenticated:
-        return False
-    return user.tipo_usuario in [TipoUsuario.NUTRICIONISTA, TipoUsuario.ADMINISTRADOR]
 
 
 @login_required

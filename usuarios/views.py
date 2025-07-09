@@ -169,11 +169,12 @@ def dashboard_paciente(request):
 # === GESTIÓN DE USUARIOS (Solo Administradores) ===
 @user_passes_test(es_administrador)
 def lista_usuarios(request):
-    """Lista todos los usuarios del sistema"""
+    """Lista todos los usuarios del sistema (activos e inactivos)"""
     query = request.GET.get('q')
     tipo_filtro = request.GET.get('tipo')
+    estado_filtro = request.GET.get('estado')
     
-    usuarios = Usuario.objects.filter(activo=True).order_by('-fecha_creacion')
+    usuarios = Usuario.objects.all().order_by('-fecha_creacion')
     
     if query:
         usuarios = usuarios.filter(
@@ -186,6 +187,12 @@ def lista_usuarios(request):
     if tipo_filtro:
         usuarios = usuarios.filter(tipo_usuario=tipo_filtro)
     
+    if estado_filtro:
+        if estado_filtro == 'activo':
+            usuarios = usuarios.filter(activo=True)
+        elif estado_filtro == 'inactivo':
+            usuarios = usuarios.filter(activo=False)
+    
     # Paginación
     paginator = Paginator(usuarios, 15)
     page_number = request.GET.get('page')
@@ -195,6 +202,7 @@ def lista_usuarios(request):
         'page_obj': page_obj,
         'query': query,
         'tipo_filtro': tipo_filtro,
+        'estado_filtro': estado_filtro,
         'tipos_usuario': TipoUsuario.choices,
     }
     
@@ -544,6 +552,112 @@ def crear_administrador(request):
             messages.error(request, f'Error inesperado: {str(e)}')
     
     return render(request, 'usuarios/crear_administrador.html')
+
+
+# === GRÁFICAS DE PROGRESO ===
+
+@login_required
+def graficas_progreso(request):
+    """Vista principal de gráficas - redirige según tipo de usuario"""
+    if request.user.tipo_usuario == TipoUsuario.PACIENTE:
+        # Los pacientes solo ven sus propias gráficas
+        try:
+            perfil_paciente = request.user.perfil_paciente
+            if perfil_paciente.paciente:
+                return redirect('grafica_paciente', paciente_id=perfil_paciente.paciente.id)
+            else:
+                messages.error(request, 'No tienes un perfil de paciente asociado.')
+                return redirect('dashboard')
+        except PerfilPaciente.DoesNotExist:
+            messages.error(request, 'No tienes un perfil de paciente.')
+            return redirect('dashboard')
+    else:
+        # Nutricionistas y administradores ven lista de pacientes
+        return lista_pacientes_graficas(request)
+
+
+@login_required
+def lista_pacientes_graficas(request):
+    """Lista de pacientes para seleccionar gráficas (solo nutricionistas/admins)"""
+    if request.user.tipo_usuario == TipoUsuario.PACIENTE:
+        messages.error(request, 'Acceso denegado.')
+        return redirect('dashboard')
+    
+    # Obtener solo pacientes que tengan al menos una valoración
+    pacientes = Paciente.objects.filter(
+        activo=True,
+        valoraciones__isnull=False
+    ).distinct().order_by('nombre', 'apellidos')
+    
+    # Filtro de búsqueda
+    query = request.GET.get('q')
+    if query:
+        pacientes = pacientes.filter(
+            Q(nombre__icontains=query) |
+            Q(apellidos__icontains=query)
+        )
+    
+    # Paginación
+    paginator = Paginator(pacientes, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'usuarios/lista_pacientes_graficas.html', {
+        'page_obj': page_obj,
+        'query': query
+    })
+
+
+@login_required
+def grafica_paciente(request, paciente_id):
+    """Muestra las gráficas de progreso de un paciente específico"""
+    paciente = get_object_or_404(Paciente, id=paciente_id, activo=True)
+    
+    # Verificar permisos
+    if request.user.tipo_usuario == TipoUsuario.PACIENTE:
+        # Los pacientes solo pueden ver sus propias gráficas
+        try:
+            perfil_paciente = request.user.perfil_paciente
+            if not perfil_paciente.paciente or perfil_paciente.paciente.id != paciente.id:
+                messages.error(request, 'Solo puedes ver tus propias gráficas.')
+                return redirect('dashboard')
+        except PerfilPaciente.DoesNotExist:
+            messages.error(request, 'No tienes un perfil de paciente.')
+            return redirect('dashboard')
+    
+    # Obtener las últimas 10 valoraciones del paciente
+    valoraciones = paciente.valoraciones.all().order_by('-fecha_creacion')[:10]
+    
+    if not valoraciones:
+        messages.warning(request, f'No hay valoraciones disponibles para {paciente.nombre} {paciente.apellidos}.')
+        if request.user.tipo_usuario == TipoUsuario.PACIENTE:
+            return redirect('dashboard')
+        else:
+            return redirect('lista_pacientes_graficas')
+    
+    # Invertir el orden para mostrar cronológicamente (más antigua a más reciente)
+    valoraciones = list(reversed(valoraciones))
+    
+    # Preparar datos para las gráficas
+    datos_graficas = {
+        'fechas': [v.fecha_creacion.strftime('%d/%m/%Y') for v in valoraciones],
+        'pesos': [float(v.peso_kg) for v in valoraciones],
+        'porcentajes_grasa': [round((float(v.kg_grasa) / float(v.peso_kg)) * 100, 1) for v in valoraciones],
+        'porcentajes_musculo': [round((float(v.kg_proteinas) / float(v.peso_kg)) * 100, 1) for v in valoraciones],
+        'kg_grasa': [float(v.kg_grasa) for v in valoraciones],
+        'kg_musculo': [float(v.kg_proteinas) for v in valoraciones],
+        'litros_agua': [float(v.litros_agua) for v in valoraciones],
+        'kg_minerales': [float(v.kg_minerales) for v in valoraciones]
+    }
+    
+    context = {
+        'paciente': paciente,
+        'valoraciones': valoraciones,
+        'datos_graficas': datos_graficas,
+        'total_valoraciones': len(valoraciones)
+    }
+    
+    return render(request, 'usuarios/grafica_paciente.html', context)
 
 
 # === NOTA: FUNCIONALIDAD DE VINCULAR PACIENTES REMOVIDA ===

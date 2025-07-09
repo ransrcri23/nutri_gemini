@@ -8,6 +8,7 @@ from .models import Valoracion
 from .services import nutricion_calculator
 from pacientes.models import Paciente
 from usuarios.models import TipoUsuario
+from utils import es_nutricionista_o_admin
 import re
 from html import unescape
 import json
@@ -311,6 +312,16 @@ def _convert_text_to_tabla_equivalencias_html(lines):
     return '\n'.join(html_parts)
 
 
+def _convert_text_to_basic_html(text_content):
+    """
+    Convierte texto plano a HTML básico preservando formato
+    """
+    # Envolvemos cada línea en un párrafo
+    lines = text_content.split('\n')
+    wrapped_lines = ['<p>' + line.strip() + '</p>' for line in lines if line.strip()]
+    return '<div class="text-content">' + ''.join(wrapped_lines) + '</div>'
+
+
 def _convert_text_to_formatted_html(text_content):
     """
     Convierte texto plano a HTML básico preservando formato
@@ -367,13 +378,8 @@ def _get_section_icon(section_title):
         return 'fas fa-circle text-info'
 
 
-def es_nutricionista_o_admin(user):
-    """Verifica si el usuario es nutricionista o administrador"""
-    if not user.is_authenticated:
-        return False
-    return user.tipo_usuario in [TipoUsuario.NUTRICIONISTA, TipoUsuario.ADMINISTRADOR]
-
-
+@login_required
+@user_passes_test(es_nutricionista_o_admin)
 def lista_valoraciones(request):
     """Lista todas las valoraciones de pacientes ACTIVOS solamente"""
     valoraciones = Valoracion.objects.select_related('paciente').filter(paciente__activo=True)

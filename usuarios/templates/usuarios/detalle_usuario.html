@@ -201,11 +201,11 @@
                         
                         <div class="row text-center">
                             <div class="col-6">
-                                <h5 class="mb-0">{{ usuario.fecha_creacion|timesince }}</h5>
-                                <small class="text-muted">en el sistema</small>
+                                <h5 class="mb-0">{{ usuario.fecha_creacion|date:"d/m/Y" }}</h5>
+                                <small class="text-muted">fecha de registro</small>
                             </div>
                             <div class="col-6">
-                                <h5 class="mb-0">{{ usuario.last_login|timesince|default:"Nunca" }}</h5>
+                                <h5 class="mb-0">{{ usuario.last_login|date:"d/m/Y"|default:"Nunca" }}</h5>
                                 <small class="text-muted">última conexión</small>
                             </div>
                         </div>

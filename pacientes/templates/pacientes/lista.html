@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Pacientes - Nutrición Asistente{% endblock %}
+{% block title %}Pacientes - Nutri Gemini{% endblock %}
 
 {% block breadcrumb %}
 <div class="container-fluid">
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-6">
                         <form method="GET" class="d-flex gap-2">
-                            <input type="search" name="q" value="{{ query }}" class="form-control" placeholder="Buscar por nombre, apellidos, email...">
+                            <input type="search" name="q" value="{{ query|default:'' }}" class="form-control" placeholder="Buscar por nombre, apellidos, email...">
                             <button type="submit" class="btn btn-light">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -43,27 +43,11 @@
         <div class="row mb-4">
             <div class="col-md-8">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="card stats-card">
                             <div class="card-body text-center">
                                 <h3 class="text-primary">{{ page_obj.paginator.count }}</h3>
                                 <p class="mb-0 small text-muted">Pacientes Activos</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card stats-card">
-                            <div class="card-body text-center">
-                                <h3 class="text-success">{{ valoraciones_total|default:0 }}</h3>
-                                <p class="mb-0 small text-muted">Valoraciones Total</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card stats-card">
-                            <div class="card-body text-center">
-                                <h3 class="text-info">{{ page_obj.paginator.num_pages }}</h3>
-                                <p class="mb-0 small text-muted">Páginas</p>
                             </div>
                         </div>
                     </div>
@@ -74,11 +58,6 @@
                     <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom btn-lg d-flex align-items-center justify-content-center">
                         <i class="fas fa-user-plus me-2"></i>Nuevo Paciente
                     </a>
-                    {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
-                        <a href="{% url 'lista_pacientes_todos' %}" class="btn btn-warning d-flex align-items-center justify-content-center">
-                            <i class="fas fa-users-cog me-2"></i>Gestión Completa
-                        </a>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -116,43 +95,23 @@
                                 </div>
                             </div>
                             
-                            <!-- Información de Contacto -->
+                            <!-- Información Resumida -->
                             <div class="mb-3">
-                                {% if paciente.correo_electronico %}
-                                <div class="small text-muted mb-1">
-                                    <i class="fas fa-envelope me-1"></i>
-                                    {{ paciente.correo_electronico }}
+                                <div class="d-flex justify-content-between align-items-center small text-muted mb-2">
+                                    <span><i class="fas fa-briefcase me-1"></i>{{ paciente.ocupacion|truncatechars:20 }}</span>
+                                    {% if paciente.correo_electronico %}
+                                        <span><i class="fas fa-envelope me-1"></i>{{ paciente.correo_electronico|truncatechars:15 }}</span>
+                                    {% endif %}
                                 </div>
-                                {% endif %}
-                                {% if paciente.telefono %}
-                                <div class="small text-muted mb-1">
-                                    <i class="fas fa-phone me-1"></i>
-                                    {{ paciente.telefono }}
-                                </div>
-                                {% endif %}
-                                <div class="small text-muted">
-                                    <i class="fas fa-briefcase me-1"></i>
-                                    {{ paciente.ocupacion }}
-                                </div>
-                            </div>
-                            
-                            <!-- Deportes y Ejercicio -->
-                            <div class="mb-3">
-                                <div class="small">
-                                    <i class="fas fa-dumbbell me-1 text-success"></i>
-                                    <strong>Deportes:</strong> {{ paciente.deportes|truncatechars:30 }}
-                                </div>
-                                <div class="small text-muted">
-                                    <i class="fas fa-clock me-1"></i>
-                                    {{ paciente.horas_semana }}
-                                </div>
-                            </div>
-                            
-                            <!-- Objetivos -->
-                            <div class="mb-3">
-                                <div class="small text-muted">
-                                    <i class="fas fa-target me-1 text-primary"></i>
-                                    <strong>Objetivo:</strong> {{ paciente.objetivos|truncatechars:50 }}
+                                <div class="bg-light p-2 rounded small">
+                                    <div class="mb-1">
+                                        <i class="fas fa-dumbbell me-1 text-success"></i>
+                                        <strong>Deporte:</strong> {{ paciente.deportes|truncatechars:25 }}
+                                    </div>
+                                    <div class="text-muted">
+                                        <i class="fas fa-target me-1 text-primary"></i>
+                                        {{ paciente.objetivos|truncatechars:40 }}
+                                    </div>
                                 </div>
                             </div>
                             

@@ -24,5 +24,10 @@ urlpatterns = [
     # Vistas para pacientes
     path('mis-valoraciones/', views.mis_valoraciones, name='mis_valoraciones'),
     path('mi-valoracion/<int:valoracion_id>/', views.mi_valoracion_detalle, name='mi_valoracion_detalle'),
+    
+    # Gráficas de progreso
+    path('graficas/', views.graficas_progreso, name='graficas_progreso'),
+    path('graficas/pacientes/', views.lista_pacientes_graficas, name='lista_pacientes_graficas'),
+    path('graficas/paciente/<int:paciente_id>/', views.grafica_paciente, name='grafica_paciente'),
 ]
 

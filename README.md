@@ -1,4 +1,4 @@
-# Sistema de Nutrición Asistente
+# Nutri Gemini
 
 ## Instalación y Ejecución
 
