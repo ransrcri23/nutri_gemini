@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Mis Valoraciones{% endblock %}
@@ -11,11 +11,11 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center justify-content-between">
                         <h2 class="mb-0">
-                            <i class="fas fa-chart-line text-primary me-2"></i>
+                            <i class="fas fa-chart-line text-primary me-2" aria-hidden="true"></i>
                             Mis Valoraciones
                         </h2>
-                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary" aria-label="Volver al dashboard">
+                            <i class="fas fa-arrow-left me-2" aria-hidden="true" aria-hidden="true"></i>
                             Volver al Dashboard
                         </a>
                     </div>
@@ -23,12 +23,12 @@
                 <div class="card-body">
                     {% if sin_perfil %}
                         <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
                             No tienes un perfil de paciente configurado.
                         </div>
                     {% elif sin_paciente %}
                         <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                             Tu usuario aún no está vinculado con un registro de paciente. 
                             Contacta con tu nutricionista para completar la vinculación.
                         </div>
@@ -36,7 +36,7 @@
                         <!-- Información del paciente -->
                         <div class="mb-4">
                             <h5 class="text-info">
-                                <i class="fas fa-user me-2"></i>
+                                <i class="fas fa-user me-2" aria-hidden="true"></i>
                                 {{ paciente.nombre }} {{ paciente.apellidos }}
                             </h5>
                             <p class="text-muted mb-0">Total de valoraciones: {{ page_obj.paginator.count }}</p>
@@ -49,7 +49,7 @@
                                     <div class="card h-100">
                                         <div class="card-header">
                                             <h6 class="mb-0">
-                                                <i class="fas fa-calendar me-2"></i>
+                                                <i class="fas fa-calendar me-2" aria-hidden="true"></i>
                                                 {{ valoracion.fecha_creacion|date:"d/m/Y" }}
                                             </h6>
                                         </div>
@@ -94,7 +94,7 @@
                                                     {% if valoracion.plan_comidas %}
                                                         <div class="col-6">
                                                             <div class="badge bg-success p-2 w-100">
-                                                                <i class="fas fa-clock me-1"></i>
+                                                                <i class="fas fa-clock me-1" aria-hidden="true"></i>
                                                                 Plan de Comidas
                                                             </div>
                                                         </div>
@@ -102,7 +102,7 @@
                                                     {% if valoracion.tabla_equivalencias %}
                                                         <div class="col-6">
                                                             <div class="badge bg-info p-2 w-100">
-                                                                <i class="fas fa-table me-1"></i>
+                                                                <i class="fas fa-table me-1" aria-hidden="true"></i>
                                                                 Tabla de Equivalencias
                                                             </div>
                                                         </div>
@@ -118,10 +118,10 @@
                                             {% endif %}
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{% url 'mi_valoracion_detalle' valoracion.id %}" class="btn btn-primary btn-sm w-100">
-                                                <i class="fas fa-eye me-2"></i>
-                                                Ver Detalles
-                                            </a>
+                                        <a href="{% url 'mi_valoracion_detalle' valoracion.id %}" class="btn btn-primary btn-sm w-100" aria-label="Ver detalles de la valoración del {{ valoracion.fecha_creacion|date:'d/m/Y' }}">
+                                            <i class="fas fa-eye me-2" aria-hidden="true" aria-hidden="true"></i>
+                                            Ver Detalles
+                                        </a>
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                         {% endif %}
                     {% else %}
                         <div class="text-center py-5">
-                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                            <i class="fas fa-chart-line fa-3x text-muted mb-3" aria-hidden="true"></i>
                             <h5>No tienes valoraciones aún</h5>
                             <p class="text-muted">Cuando tu nutricionista cree valoraciones para ti, aparecerán aquí.</p>
                         </div>
@@ -169,4 +169,5 @@
     </div>
 </div>
 {% endblock %}
+
 

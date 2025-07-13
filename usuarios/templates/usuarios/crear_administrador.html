@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Crear Administrador{% endblock %}
@@ -11,29 +11,30 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
-                            <i class="fas fa-arrow-left"></i>
+                            <i class="fas fa-arrow-left" aria-hidden="true" aria-hidden="true"></i>
                         </a>
                         <h2 class="mb-0">
-                            <i class="fas fa-user-cog text-danger me-2"></i>
+                            <i class="fas fa-user-cog text-danger me-2" aria-hidden="true" aria-hidden="true"></i>
                             Crear Nuevo Administrador
                         </h2>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="post" id="formCrearAdministrador">
+                    <form method="post" id="formCrearAdministrador" aria-label="Formulario para crear nuevo administrador">
                         {% csrf_token %}
                         
                         <!-- Datos Básicos -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">
-                                <i class="fas fa-user me-2"></i>
+                                <i class="fas fa-user me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Datos Básicos
                             </h5>
                             
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="nombre" class="form-label">Nombre *</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required aria-required="true" aria-describedby="nombre-help">
+                                    <div id="nombre-help" class="visually-hidden">Campo obligatorio para el nombre del administrador</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="apellidos" class="form-label">Apellidos *</label>
@@ -56,18 +57,18 @@
                         
                         <!-- Info sobre generación automática -->
                         <div class="alert alert-warning mb-4">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>¡Importante!</strong> Se generará automáticamente un usuario administrador con credenciales temporales. Estas credenciales se mostrarán después de la creación.
+                            <i class="fas fa-exclamation-triangle me-2" aria-hidden="true" aria-hidden="true"></i>
+                            <strong>Â¡Importante!</strong> Se generará automáticamente un usuario administrador con credenciales temporales. Estas credenciales se mostrarán después de la creación.
                         </div>
 
                         <!-- Botones -->
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i>
+                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary" aria-label="Cancelar y volver a la lista de usuarios">
+                                <i class="fas fa-times me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Cancelar
                             </a>
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-save me-2"></i>
+                            <button type="submit" class="btn btn-danger" aria-label="Crear nuevo administrador">
+                                <i class="fas fa-save me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Crear Administrador
                             </button>
                         </div>
@@ -78,4 +79,5 @@
     </div>
 </div>
 {% endblock %}
+
 

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Dashboard Paciente - Nutri Gemini{% endblock %}
 
@@ -11,14 +11,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <h2 class="mb-0">
-                            <i class="fas fa-user me-2"></i>
+                            <i class="fas fa-user me-2" aria-hidden="true"></i>
                             Mi Panel Personal
                         </h2>
                         <p class="mb-0 mt-2 opacity-75">Bienvenido {{ user.nombre_completo }}</p>
                     </div>
                     <div class="col-auto">
                         <span class="badge bg-info fs-6">
-                            <i class="fas fa-user me-1"></i>Paciente
+                            <i class="fas fa-user me-1" aria-hidden="true"></i>Paciente
                         </span>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
         {% if sin_perfil %}
             <!-- Sin perfil -->
             <div class="alert alert-warning" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i>
+                <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
                 <strong>Perfil no encontrado</strong><br>
                 No se ha encontrado tu perfil de paciente. Contacta con el administrador.
             </div>
@@ -38,13 +38,13 @@
                 <div class="col-md-8 mx-auto">
                     <div class="card card-custom">
                         <div class="card-header text-center">
-                            <h4><i class="fas fa-info-circle me-2"></i>Cuenta Pendiente de Activación</h4>
+                            <h4><i class="fas fa-info-circle me-2" aria-hidden="true"></i>Cuenta Pendiente de Activación</h4>
                         </div>
                         <div class="card-body text-center">
                             <p class="mb-4">Tu cuenta ha sido creada exitosamente, pero aún no has sido vinculado a un expediente de paciente.</p>
                             
                             <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>
+                                <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                                 <strong>Cuenta pendiente:</strong>
                                 <p class="mb-0 mt-2">
                                     Tu cuenta ha sido creada pero aún no se han vinculado tus datos médicos. 
@@ -56,7 +56,7 @@
                                 <form method="post" action="{% url 'logout' %}" style="display: inline-block;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-outline-secondary">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                        <i class="fas fa-sign-out-alt me-2" aria-hidden="true"></i>Cerrar Sesión
                                     </button>
                                 </form>
                             </div>
@@ -71,7 +71,7 @@
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="card stats-card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
+                            <i class="fas fa-chart-line fa-2x text-success mb-3" aria-hidden="true"></i>
                             <h3 class="text-success">{{ total_valoraciones|default:0 }}</h3>
                             <p class="mb-0 small text-muted">Valoraciones Totales</p>
                         </div>
@@ -80,7 +80,7 @@
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="card stats-card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-user-injured fa-2x text-info mb-3"></i>
+                            <i class="fas fa-user-injured fa-2x text-info mb-3" aria-hidden="true"></i>
                             <h3 class="text-info">{{ paciente.edad }}</h3>
                             <p class="mb-0 small text-muted">Años</p>
                         </div>
@@ -89,7 +89,7 @@
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="card stats-card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-calendar-check fa-2x text-warning mb-3"></i>
+                            <i class="fas fa-calendar-check fa-2x text-warning mb-3" aria-hidden="true"></i>
                             <h3 class="text-warning">{% if ultima_valoracion %}{{ ultima_valoracion.fecha_creacion|date:"d/m" }}{% else %}---{% endif %}</h3>
                             <p class="mb-0 small text-muted">Última Valoración</p>
                         </div>
@@ -98,7 +98,7 @@
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="card stats-card h-100">
                         <div class="card-body text-center">
-                            <i class="fas fa-heartbeat fa-2x text-danger mb-3"></i>
+                            <i class="fas fa-heartbeat fa-2x text-danger mb-3" aria-hidden="true"></i>
                             <h3 class="text-danger">{% if ultima_valoracion %}{{ ultima_valoracion.peso_kg|floatformat:1 }}{% else %}---{% endif %}</h3>
                             <p class="mb-0 small text-muted">Último Peso (kg)</p>
                         </div>
@@ -111,7 +111,7 @@
                 <div class="col-md-6">
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Mi Información</h5>
+                            <h5 class="mb-0"><i class="fas fa-user me-2" aria-hidden="true"></i>Mi Información</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -137,27 +137,27 @@
                 <div class="col-md-6">
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
+                            <h5 class="mb-0"><i class="fas fa-bolt me-2" aria-hidden="true"></i>Acciones Rápidas</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-grid gap-2">
                                 <a href="{% url 'mis_valoraciones' %}" class="btn btn-primary-custom">
-                                    <i class="fas fa-chart-line me-2"></i>Ver Mis Valoraciones
+                                    <i class="fas fa-chart-line me-2" aria-hidden="true"></i>Ver Mis Valoraciones
                                 </a>
                                 {% if total_valoraciones > 0 %}
                                 <a href="{% url 'graficas_progreso' %}" class="btn btn-success">
-                                    <i class="fas fa-chart-bar me-2"></i>Mi Progreso
+                                    <i class="fas fa-chart-bar me-2" aria-hidden="true"></i>Mi Progreso
                                 </a>
                                 {% endif %}
                                 {% if ultima_valoracion %}
                                 <a href="{% url 'mi_valoracion_detalle' ultima_valoracion.id %}" class="btn btn-info">
-                                    <i class="fas fa-eye me-2"></i>Última Valoración
+                                    <i class="fas fa-eye me-2" aria-hidden="true"></i>Última Valoración
                                 </a>
                                 {% endif %}
                                 <form method="post" action="{% url 'logout' %}" style="display: inline-block; width: 100%;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-outline-danger w-100">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                        <i class="fas fa-sign-out-alt me-2" aria-hidden="true"></i>Cerrar Sesión
                                     </button>
                                 </form>
                             </div>
@@ -172,33 +172,29 @@
                 <div class="col-12">
                     <div class="card card-custom">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Mis Valoraciones Recientes</h5>
+                            <h5 class="mb-0"><i class="fas fa-clock me-2" aria-hidden="true"></i>Mis Valoraciones Recientes</h5>
                         </div>
                         <div class="card-body">
                             {% for valoracion in valoraciones|slice:":5" %}
                             <div class="d-flex align-items-center mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
                                 <div class="flex-shrink-0">
                                     {% if valoracion.tiene_macronutrientes %}
-                                        <i class="fas fa-check-circle fa-lg text-success"></i>
+                                        <i class="fas fa-check-circle fa-lg text-success" aria-hidden="true"></i>
                                     {% else %}
-                                        <i class="fas fa-clock fa-lg text-warning"></i>
+                                        <i class="fas fa-clock fa-lg text-warning" aria-hidden="true"></i>
                                     {% endif %}
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <div class="fw-bold">Valoración del {{ valoracion.fecha_creacion|date:"d/m/Y" }}</div>
                                     <small class="text-muted">
                                         Peso: {{ valoracion.peso_kg|floatformat:1 }} kg • 
-                                        Altura: {{ valoracion.altura_cm }} cm
-                                        {% if valoracion.tiene_macronutrientes %}
-                                            • <span class="text-success">Analizada</span>
-                                        {% else %}
-                                            • <span class="text-warning">Pendiente</span>
-                                        {% endif %}
+                                        Grasa: {{ valoracion.porcentaje_grasa_corporal|floatformat:1 }}% • 
+                                        Músculo: {{ valoracion.porcentaje_musculo|floatformat:1 }}%
                                     </small>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <a href="{% url 'mi_valoracion_detalle' valoracion.id %}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
                             </div>
@@ -207,7 +203,7 @@
                             {% if valoraciones.count > 5 %}
                             <div class="text-center mt-3">
                                 <a href="{% url 'mis_valoraciones' %}" class="btn btn-outline-primary">
-                                    <i class="fas fa-list me-2"></i>Ver Todas las Valoraciones
+                                    <i class="fas fa-list me-2" aria-hidden="true"></i>Ver Todas las Valoraciones
                                 </a>
                             </div>
                             {% endif %}
@@ -219,7 +215,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="alert alert-info text-center" role="alert">
-                        <i class="fas fa-info-circle fa-2x mb-3"></i><br>
+                        <i class="fas fa-info-circle fa-2x mb-3" aria-hidden="true"></i><br>
                         <strong>Aún no tienes valoraciones</strong><br>
                         Cuando tu nutricionista realice una valoración, aparecerá aquí.
                     </div>
@@ -230,4 +226,5 @@
     </div>
 </div>
 {% endblock %}
+
 

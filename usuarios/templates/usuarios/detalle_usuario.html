@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}{{ usuario.nombre_completo }}{% endblock %}
@@ -11,7 +11,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <h5 class="alert-heading"><i class="fas fa-user-check me-2"></i>Usuario creado exitosamente</h5>
+                <h5 class="alert-heading"><i class="fas fa-user-check me-2" aria-hidden="true"></i>Usuario creado exitosamente</h5>
                 <p class="mb-2">Se ha generado automáticamente el usuario para el {{ usuario_recien_creado.tipo }}:</p>
                 <ul class="mb-3">
                     <li><strong>Usuario:</strong> {{ usuario_recien_creado.username }}</li>
@@ -31,10 +31,10 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
-                            <i class="fas fa-arrow-left"></i>
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
                         </a>
                         <h2 class="mb-0">
-                            <i class="fas fa-user text-primary me-2"></i>
+                            <i class="fas fa-user text-primary me-2" aria-hidden="true"></i>
                             {{ usuario.nombre_completo }}
                         </h2>
                         <span class="badge bg-{{ usuario.tipo_usuario|yesno:'success,info,warning' }} ms-3">
@@ -46,7 +46,7 @@
                     <!-- Información Básica -->
                     <div class="mb-4">
                         <h5 class="text-primary mb-3">
-                            <i class="fas fa-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                             Información Básica
                         </h5>
                         
@@ -92,7 +92,7 @@
                     {% if usuario.tipo_usuario == 'NUTRICIONISTA' and perfil_nutricionista %}
                         <div class="mb-4">
                             <h5 class="text-success mb-3">
-                                <i class="fas fa-user-md me-2"></i>
+                                <i class="fas fa-user-md me-2" aria-hidden="true"></i>
                                 Datos Profesionales
                             </h5>
                             
@@ -126,7 +126,7 @@
                     {% if usuario.tipo_usuario == 'PACIENTE' and perfil_paciente %}
                         <div class="mb-4">
                             <h5 class="text-info mb-3">
-                                <i class="fas fa-user-injured me-2"></i>
+                                <i class="fas fa-user-injured me-2" aria-hidden="true"></i>
                                 Datos de Paciente
                             </h5>
                             
@@ -135,12 +135,12 @@
                                     <strong>Paciente Vinculado:</strong><br>
                                     {% if perfil_paciente.paciente %}
                                         <span class="text-success">
-                                            <i class="fas fa-check me-1"></i>
+                                            <i class="fas fa-check me-1" aria-hidden="true"></i>
                                             {{ perfil_paciente.paciente.nombre }} {{ perfil_paciente.paciente.apellidos }}
                                         </span>
                                     {% else %}
                                         <span class="text-warning">
-                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                            <i class="fas fa-exclamation-triangle me-1" aria-hidden="true"></i>
                                             Sin vincular
                                         </span>
                                     {% endif %}
@@ -151,24 +151,24 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-between">
-                        <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>
+                        <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary" aria-label="Volver a la lista de usuarios">
+                            <i class="fas fa-arrow-left me-2" aria-hidden="true" aria-hidden="true"></i>
                             Volver a la Lista
                         </a>
                         
                         <div>
                             {% if usuario.tipo_usuario == 'PACIENTE' and not perfil_paciente.paciente %}
                                 <div class="alert alert-info me-2" role="alert">
-                                    <i class="fas fa-info-circle me-1"></i>
+                                    <i class="fas fa-info-circle me-1" aria-hidden="true"></i>
                                     <strong>Nota:</strong> Los usuarios de pacientes ahora se crean automáticamente junto con los datos del paciente.
                                 </div>
                             {% endif %}
                             
                             <form method="post" action="{% url 'toggle_usuario_activo' usuario.id %}" 
-                                  class="d-inline" onsubmit="return confirm('¿Confirmar cambio de estado?')">
+                                  class="d-inline" onsubmit="return confirm('Â¿Confirmar cambio de estado?')">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-{{ usuario.activo|yesno:'danger,success' }}">
-                                    <i class="fas fa-{{ usuario.activo|yesno:'ban,check' }} me-2"></i>
+                                    <i class="fas fa-{{ usuario.activo|yesno:'ban,check' }} me-2" aria-hidden="true"></i>
                                     {{ usuario.activo|yesno:'Desactivar,Activar' }}
                                 </button>
                             </form>
@@ -182,7 +182,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">
-                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        <i class="fas fa-chart-line text-primary me-2" aria-hidden="true"></i>
                         Estadísticas
                     </h5>
                 </div>
@@ -236,4 +236,5 @@
 </style>
 
 {% endblock %}
+
 

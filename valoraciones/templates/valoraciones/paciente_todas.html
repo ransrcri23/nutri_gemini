@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Valoraciones de {{ paciente.nombre }} {{ paciente.apellidos }} - Nutri Gemini{% endblock %}
 
@@ -23,18 +23,18 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <h2 class="mb-0">
-                            <i class="fas fa-chart-line me-2"></i>Valoraciones de {{ paciente.nombre }} {{ paciente.apellidos }}
+                            <i class="fas fa-chart-line me-2" aria-hidden="true" aria-hidden="true"></i>Valoraciones de {{ paciente.nombre }} {{ paciente.apellidos }}
                         </h2>
                         <p class="mb-0 mt-1 opacity-75">
                             Vista completa para nutricionistas y administradores
                             {% if not paciente.activo %}
-                                <span class="badge bg-warning text-dark ms-2">PACIENTE INACTIVO</span>
+                                <span class="badge bg-warning text-dark ms-2" aria-label="Paciente inactivo">PACIENTE INACTIVO</span>
                             {% endif %}
                         </p>
                     </div>
                     <div class="col-auto">
-                        <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary">
-                            <i class="fas fa-plus me-1"></i>Nueva Valoración
+                        <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary" aria-label="Crear nueva valoración">
+                            <i class="fas fa-plus me-1" aria-hidden="true" aria-hidden="true"></i>Nueva Valoración
                         </a>
                     </div>
                 </div>
@@ -48,16 +48,16 @@
                                 <div class="card-header bg-light">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">
-                                            <i class="fas fa-calendar me-1"></i>
+                                            <i class="fas fa-calendar me-1" aria-hidden="true" aria-hidden="true"></i>
                                             {{ valoracion.fecha_creacion|date:"d/m/Y H:i" }}
                                         </h6>
                                         {% if valoracion.tiene_macronutrientes %}
-                                            <span class="badge bg-success">
-                                                <i class="fas fa-check me-1"></i>Completa
+                                            <span class="badge bg-success" aria-label="Valoración completa con macronutrientes">
+                                                <i class="fas fa-check me-1" aria-hidden="true" aria-hidden="true"></i>Completa
                                             </span>
                                         {% else %}
-                                            <span class="badge bg-warning">
-                                                <i class="fas fa-clock me-1"></i>Pendiente
+                                            <span class="badge bg-warning" aria-label="Valoración pendiente, sin macronutrientes">
+                                                <i class="fas fa-clock me-1" aria-hidden="true" aria-hidden="true"></i>Pendiente
                                             </span>
                                         {% endif %}
                                     </div>
@@ -107,7 +107,7 @@
                                     {% if valoracion.notas %}
                                     <div class="mb-3">
                                         <small class="text-muted">
-                                            <i class="fas fa-sticky-note me-1"></i>
+                                            <i class="fas fa-sticky-note me-1" aria-hidden="true" aria-hidden="true"></i>
                                             {{ valoracion.notas|truncatechars:100 }}
                                         </small>
                                     </div>
@@ -115,11 +115,11 @@
                                 </div>
                                 <div class="card-footer bg-transparent">
                                     <div class="d-flex gap-2">
-                                        <a href="{% url 'detalle_valoracion' valoracion.id %}" class="btn btn-primary btn-sm flex-fill">
-                                            <i class="fas fa-eye me-1"></i>Ver Detalle
+                                        <a href="{% url 'detalle_valoracion' valoracion.id %}" class="btn btn-primary btn-sm flex-fill" aria-label="Ver detalles de la valoración">
+                                            <i class="fas fa-eye me-1" aria-hidden="true" aria-hidden="true"></i>Ver Detalle
                                         </a>
-                                        <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-warning btn-sm flex-fill">
-                                            <i class="fas fa-edit me-1"></i>Editar
+                                        <a href="{% url 'editar_valoracion' valoracion.id %}" class="btn btn-warning btn-sm flex-fill" aria-label="Editar valoración">
+                                            <i class="fas fa-edit me-1" aria-hidden="true" aria-hidden="true"></i>Editar
                                         </a>
                                     </div>
                                 </div>
@@ -129,11 +129,11 @@
                     </div>
                 {% else %}
                     <div class="text-center py-5">
-                        <i class="fas fa-chart-line fa-4x text-muted mb-3"></i>
+                        <i class="fas fa-chart-line fa-4x text-muted mb-3" aria-hidden="true" aria-hidden="true"></i>
                         <h4 class="text-muted">No hay valoraciones para este paciente</h4>
                         <p class="text-muted">Aún no se han creado valoraciones para {{ paciente.nombre }} {{ paciente.apellidos }}.</p>
-                        <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary">
-                            <i class="fas fa-plus me-1"></i>Crear Primera Valoración
+                        <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary" aria-label="Crear la primera valoración corporal">
+                            <i class="fas fa-plus me-1" aria-hidden="true" aria-hidden="true"></i>Crear Primera Valoración
                         </a>
                     </div>
                 {% endif %}
@@ -144,44 +144,44 @@
         <div class="card mt-4">
             <div class="card-header bg-light">
                 <h5 class="mb-0">
-                    <i class="fas fa-user me-2"></i>Información del Paciente
+                    <i class="fas fa-user me-2" aria-hidden="true" aria-hidden="true"></i>Información del Paciente
                 </h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong><i class="fas fa-signature me-1"></i>Nombre:</strong> {{ paciente.nombre }} {{ paciente.apellidos }}</p>
-                        <p><strong><i class="fas fa-birthday-cake me-1"></i>Edad:</strong> {{ paciente.edad }} años</p>
-                        <p><strong><i class="fas fa-ruler-vertical me-1"></i>Estatura:</strong> {{ paciente.estatura }} m</p>
-                        <p><strong><i class="fas fa-toggle-on me-1"></i>Estado:</strong> 
+                        <p><strong><i class="fas fa-signature me-1" aria-hidden="true" aria-hidden="true"></i>Nombre:</strong> {{ paciente.nombre }} {{ paciente.apellidos }}</p>
+                        <p><strong><i class="fas fa-birthday-cake me-1" aria-hidden="true" aria-hidden="true"></i>Edad:</strong> {{ paciente.edad }} años</p>
+                        <p><strong><i class="fas fa-ruler-vertical me-1" aria-hidden="true" aria-hidden="true"></i>Estatura:</strong> {{ paciente.estatura }} m</p>
+                        <p><strong><i class="fas fa-toggle-on me-1" aria-hidden="true" aria-hidden="true"></i>Estado:</strong> 
                             {% if paciente.activo %}
-                                <span class="badge bg-success">Activo</span>
+                                <span class="badge bg-success" aria-label="Paciente activo">Activo</span>
                             {% else %}
-                                <span class="badge bg-warning text-dark">Inactivo</span>
+                                <span class="badge bg-warning text-dark" aria-label="Paciente inactivo">Inactivo</span>
                             {% endif %}
                         </p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong><i class="fas fa-briefcase me-1"></i>Ocupación:</strong> {{ paciente.ocupacion }}</p>
-                        <p><strong><i class="fas fa-dumbbell me-1"></i>Deportes:</strong> {{ paciente.deportes }}</p>
-                        <p><strong><i class="fas fa-clock me-1"></i>Ejercicio:</strong> {{ paciente.horas_semana }}</p>
+                        <p><strong><i class="fas fa-briefcase me-1" aria-hidden="true" aria-hidden="true"></i>Ocupación:</strong> {{ paciente.ocupacion }}</p>
+                        <p><strong><i class="fas fa-dumbbell me-1" aria-hidden="true" aria-hidden="true"></i>Deportes:</strong> {{ paciente.deportes }}</p>
+                        <p><strong><i class="fas fa-clock me-1" aria-hidden="true" aria-hidden="true"></i>Ejercicio:</strong> {{ paciente.horas_semana }}</p>
                     </div>
                     {% if paciente.objetivos %}
                         <div class="col-12">
-                            <p><strong><i class="fas fa-target me-1"></i>Objetivos:</strong> {{ paciente.objetivos }}</p>
+                            <p><strong><i class="fas fa-target me-1" aria-hidden="true" aria-hidden="true"></i>Objetivos:</strong> {{ paciente.objetivos }}</p>
                         </div>
                     {% endif %}
                 </div>
                 
                 <div class="d-flex gap-2 mt-3">
-                    <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-primary">
-                        <i class="fas fa-user me-1"></i>Ver Paciente
+                    <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-primary" aria-label="Ver perfil del paciente">
+                        <i class="fas fa-user me-1" aria-hidden="true" aria-hidden="true"></i>Ver Paciente
                     </a>
-                    <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-outline-warning">
-                        <i class="fas fa-edit me-1"></i>Editar Paciente
+                    <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-outline-warning" aria-label="Editar información del paciente">
+                        <i class="fas fa-edit me-1" aria-hidden="true" aria-hidden="true"></i>Editar Paciente
                     </a>
-                    <a href="{% url 'lista_pacientes_todos' %}" class="btn btn-outline-secondary">
-                        <i class="fas fa-users me-1"></i>Todos los Pacientes
+                    <a href="{% url 'lista_pacientes_todos' %}" class="btn btn-outline-secondary" aria-label="Ir a la lista de todos los pacientes">
+                        <i class="fas fa-users me-1" aria-hidden="true" aria-hidden="true"></i>Todos los Pacientes
                     </a>
                 </div>
             </div>
@@ -189,4 +189,5 @@
     </div>
 </div>
 {% endblock %}
+
 

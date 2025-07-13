@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -167,7 +167,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-apple-alt me-2"></i>
+                <i class="fas fa-apple-alt me-2" aria-hidden="true"></i>
                 Nutri Gemini
             </a>
             
@@ -178,24 +178,24 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home me-1"></i>Inicio</a>
+                        <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home me-1" aria-hidden="true"></i>Inicio</a>
                     </li>
                     {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'lista_pacientes' %}"><i class="fas fa-users me-1"></i>Pacientes</a>
+                            <a class="nav-link" href="{% url 'lista_pacientes' %}"><i class="fas fa-users me-1" aria-hidden="true"></i>Pacientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'lista_valoraciones' %}"><i class="fas fa-chart-line me-1"></i>Valoraciones</a>
+                            <a class="nav-link" href="{% url 'lista_valoraciones' %}"><i class="fas fa-chart-line me-1" aria-hidden="true"></i>Valoraciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'graficas_progreso' %}"><i class="fas fa-chart-area me-1"></i>Gráficas</a>
+                            <a class="nav-link" href="{% url 'graficas_progreso' %}"><i class="fas fa-chart-area me-1" aria-hidden="true"></i>Gráficas</a>
                         </li>
                     {% elif user.is_authenticated and user.tipo_usuario == 'paciente' %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'mis_valoraciones' %}"><i class="fas fa-chart-line me-1"></i>Mis Valoraciones</a>
+                            <a class="nav-link" href="{% url 'mis_valoraciones' %}"><i class="fas fa-chart-line me-1" aria-hidden="true"></i>Mis Valoraciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'graficas_progreso' %}"><i class="fas fa-chart-area me-1"></i>Mi Progreso</a>
+                            <a class="nav-link" href="{% url 'graficas_progreso' %}"><i class="fas fa-chart-area me-1" aria-hidden="true"></i>Mi Progreso</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -203,19 +203,19 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-1"></i>{{ user.nombre_completo|default:user.username }}
+                                <i class="fas fa-user me-1" aria-hidden="true"></i>{{ user.nombre_completo|default:user.username }}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt me-2" aria-hidden="true"></i>Dashboard</a></li>
                                 {% if user.tipo_usuario == 'administrador' %}
-                                    <li><a class="dropdown-item" href="/admin/"><i class="fas fa-cog me-2"></i>Administración</a></li>
+                                    <li><a class="dropdown-item" href="/admin/"><i class="fas fa-cog me-2" aria-hidden="true"></i>Administración</a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="post" action="{% url 'logout' %}" style="display: inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left;">
-                                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                            <i class="fas fa-sign-out-alt me-2" aria-hidden="true"></i>Cerrar Sesión
                                         </button>
                                     </form>
                                 </li>
@@ -223,7 +223,7 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión</a>
+                            <a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-1" aria-hidden="true"></i>Iniciar Sesión</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -242,13 +242,13 @@
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-custom alert-dismissible fade show" role="alert">
                     {% if message.tags == 'error' %}
-                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
                     {% elif message.tags == 'success' %}
-                        <i class="fas fa-check-circle me-2"></i>
+                        <i class="fas fa-check-circle me-2" aria-hidden="true"></i>
                     {% elif message.tags == 'info' %}
-                        <i class="fas fa-info-circle me-2"></i>
+                        <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                     {% elif message.tags == 'warning' %}
-                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <i class="fas fa-exclamation-circle me-2" aria-hidden="true"></i>
                     {% endif %}
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -264,7 +264,7 @@
     <footer class="footer">
         <div class="container">
             <p class="mb-0">
-                <i class="fas fa-heart text-danger me-1"></i>
+                <i class="fas fa-heart text-danger me-1" aria-hidden="true"></i>
                 Nutri Gemini - Tu asistente nutricional con AI
             </p>
         </div>
@@ -277,4 +277,5 @@
     {% endblock %}
 </body>
 </html>
+
 

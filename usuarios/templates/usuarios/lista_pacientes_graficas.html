@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Gráficas de Progreso - Nutri Gemini{% endblock %}
 
@@ -11,17 +11,17 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <h2 class="mb-0">
-                                <i class="fas fa-chart-line text-primary me-2"></i>
+                                <i class="fas fa-chart-line text-primary me-2" aria-hidden="true"></i>
                                 Gráficas de Progreso
                             </h2>
                             <p class="mb-0 mt-2 text-muted">Selecciona un paciente para ver su progreso</p>
                         </div>
                         <div class="col-md-6">
-                            <form method="GET" class="d-flex gap-2">
+                            <form method="GET" class="d-flex gap-2" role="search" aria-label="Buscar pacientes para gráficas">
                                 <input type="search" name="q" value="{{ query|default:'' }}" 
-                                       class="form-control" placeholder="Buscar paciente...">
-                                <button type="submit" class="btn btn-outline-primary">
-                                    <i class="fas fa-search"></i>
+                                       class="form-control" placeholder="Buscar paciente..." aria-label="Campo de búsqueda de pacientes">
+                                <button type="submit" class="btn btn-outline-primary" aria-label="Buscar pacientes">
+                                    <i class="fas fa-search" aria-hidden="true" aria-hidden="true"></i>
                                 </button>
                             </form>
                         </div>
@@ -43,7 +43,7 @@
                                                 <div>
                                                     <h5 class="mb-1">{{ paciente.nombre }} {{ paciente.apellidos }}</h5>
                                                     <p class="text-muted mb-0">
-                                                        <i class="fas fa-birthday-cake me-1"></i>
+                                                        <i class="fas fa-birthday-cake me-1" aria-hidden="true"></i>
                                                         {{ paciente.edad }} años
                                                     </p>
                                                 </div>
@@ -69,15 +69,15 @@
                                             
                                             <div class="bg-light p-2 rounded mb-3">
                                                 <small class="text-muted">
-                                                    <i class="fas fa-target me-1"></i>
+                                                    <i class="fas fa-target me-1" aria-hidden="true"></i>
                                                     {{ paciente.objetivos|truncatechars:50 }}
                                                 </small>
                                             </div>
                                         </div>
                                         <div class="card-footer bg-transparent">
                                             <a href="{% url 'grafica_paciente' paciente.id %}" 
-                                               class="btn btn-primary w-100">
-                                                <i class="fas fa-chart-line me-2"></i>
+                                               class="btn btn-primary w-100" aria-label="Ver gráficas de progreso de {{ paciente.nombre }} {{ paciente.apellidos }}">
+                                                <i class="fas fa-chart-line me-2" aria-hidden="true" aria-hidden="true"></i>
                                                 Ver Gráficas de Progreso
                                             </a>
                                         </div>
@@ -117,18 +117,18 @@
                     {% else %}
                         <div class="text-center py-5">
                             {% if query %}
-                                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                <i class="fas fa-search fa-3x text-muted mb-3" aria-hidden="true"></i>
                                 <h5>No se encontraron pacientes</h5>
                                 <p class="text-muted">No hay pacientes que coincidan con "{{ query }}"</p>
                                 <a href="{% url 'lista_pacientes_graficas' %}" class="btn btn-outline-primary">
-                                    <i class="fas fa-times me-2"></i>Limpiar Búsqueda
+                                    <i class="fas fa-times me-2" aria-hidden="true"></i>Limpiar Búsqueda
                                 </a>
                             {% else %}
-                                <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                                <i class="fas fa-chart-line fa-3x text-muted mb-3" aria-hidden="true"></i>
                                 <h5>No hay pacientes con valoraciones</h5>
                                 <p class="text-muted">Los pacientes aparecerán aquí una vez que tengan valoraciones registradas.</p>
                                 <a href="{% url 'lista_pacientes' %}" class="btn btn-primary">
-                                    <i class="fas fa-users me-2"></i>Ver Todos los Pacientes
+                                    <i class="fas fa-users me-2" aria-hidden="true"></i>Ver Todos los Pacientes
                                 </a>
                             {% endif %}
                         </div>
@@ -157,3 +157,4 @@
 }
 </style>
 {% endblock %}
+

@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -156,7 +156,7 @@
                 <div class="login-container">
                     <!-- Header -->
                     <div class="login-header">
-                        <i class="fas fa-apple-alt logo-icon"></i>
+                        <i class="fas fa-apple-alt logo-icon" aria-hidden="true"></i>
                         <h2 class="mb-0">Nutri Gemini</h2>
                         <p class="mb-0 mt-2 opacity-75">Sistema de Gestión Nutricional</p>
                     </div>
@@ -168,11 +168,11 @@
                             {% for message in messages %}
                                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                                     {% if message.tags == 'error' %}
-                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
                                     {% elif message.tags == 'success' %}
-                                        <i class="fas fa-check-circle me-2"></i>
+                                        <i class="fas fa-check-circle me-2" aria-hidden="true"></i>
                                     {% elif message.tags == 'info' %}
-                                        <i class="fas fa-info-circle me-2"></i>
+                                        <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                                     {% endif %}
                                     {{ message }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -181,25 +181,25 @@
                         {% endif %}
                         
                         <!-- Login Form -->
-                        <form method="POST">
+                        <form method="POST" aria-label="Formulario de inicio de sesión">
                             {% csrf_token %}
                             
                             <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="fas fa-envelope" aria-hidden="true" aria-hidden="true"></i>
                                 </span>
-                                <input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required aria-required="true" aria-label="Correo electrónico">
                             </div>
                             
                             <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="fas fa-lock"></i>
+                                    <i class="fas fa-lock" aria-hidden="true" aria-hidden="true"></i>
                                 </span>
-                                <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required aria-required="true" aria-label="Contraseña">
                             </div>
                             
-                            <button type="submit" class="btn btn-login">
-                                <i class="fas fa-sign-in-alt me-2"></i>
+                            <button type="submit" class="btn btn-login" aria-label="Iniciar sesión">
+                                <i class="fas fa-sign-in-alt me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Iniciar Sesión
                             </button>
                         </form>
@@ -212,7 +212,7 @@
     <!-- Footer con botón de alto contraste -->
     <div style="position: fixed; bottom: 20px; right: 20px;">
         <button id="high-contrast-toggle" class="btn btn-outline-light btn-sm" title="Activar/Desactivar Alto Contraste" style="background: rgba(0,0,0,0.7); border: 1px solid #fff;">
-            <i class="fas fa-adjust"></i> Alto Contraste
+            <i class="fas fa-adjust" aria-hidden="true"></i> Alto Contraste
         </button>
     </div>
     
@@ -234,9 +234,9 @@
                     
                     // Actualizar texto del botón
                     if (isHighContrast) {
-                        toggleButton.innerHTML = '<i class="fas fa-adjust"></i> Modo Normal';
+                        toggleButton.innerHTML = '<i class="fas fa-adjust" aria-hidden="true"></i> Modo Normal';
                     } else {
-                        toggleButton.innerHTML = '<i class="fas fa-adjust"></i> Alto Contraste';
+                        toggleButton.innerHTML = '<i class="fas fa-adjust" aria-hidden="true"></i> Alto Contraste';
                     }
                 });
             }
@@ -245,11 +245,12 @@
             if (localStorage.getItem('high-contrast') === 'true') {
                 document.body.classList.add('high-contrast');
                 if (toggleButton) {
-                    toggleButton.innerHTML = '<i class="fas fa-adjust"></i> Modo Normal';
+                    toggleButton.innerHTML = '<i class="fas fa-adjust" aria-hidden="true"></i> Modo Normal';
                 }
             }
         });
     </script>
 </body>
 </html>
+
 

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Crear Nutricionista{% endblock %}
@@ -11,29 +11,30 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
-                            <i class="fas fa-arrow-left"></i>
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
                         </a>
                         <h2 class="mb-0">
-                            <i class="fas fa-user-md text-success me-2"></i>
+                            <i class="fas fa-user-md text-success me-2" aria-hidden="true"></i>
                             Crear Nuevo Nutricionista
                         </h2>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="post" id="formCrearNutricionista">
+                    <form method="post" id="formCrearNutricionista" aria-label="Formulario para crear nuevo nutricionista">
                         {% csrf_token %}
                         
                         <!-- Datos Básicos -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">
-                                <i class="fas fa-user me-2"></i>
+                                <i class="fas fa-user me-2" aria-hidden="true"></i>
                                 Datos Básicos
                             </h5>
                             
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="nombre" class="form-label">Nombre *</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required aria-required="true" aria-describedby="nombre-help">
+                                    <div id="nombre-help" class="visually-hidden">Campo obligatorio para el nombre del nutricionista</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="apellidos" class="form-label">Apellidos *</label>
@@ -64,7 +65,7 @@
                         <!-- Datos Profesionales -->
                         <div class="mb-4">
                             <h5 class="text-success mb-3">
-                                <i class="fas fa-user-md me-2"></i>
+                                <i class="fas fa-user-md me-2" aria-hidden="true"></i>
                                 Datos Profesionales
                             </h5>
                             
@@ -94,18 +95,18 @@
                         
                         <!-- Info sobre generación automática -->
                         <div class="alert alert-info mb-4">
-                            <i class="fas fa-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
                             <strong>Nota:</strong> Se generará automáticamente un usuario con credenciales temporales. Estas credenciales se mostrarán después de la creación.
                         </div>
                         
                         <!-- Botones -->
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i>
+                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary" aria-label="Cancelar y volver a la lista de usuarios">
+                                <i class="fas fa-times me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Cancelar
                             </a>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save me-2"></i>
+                            <button type="submit" class="btn btn-success" aria-label="Crear nuevo nutricionista">
+                                <i class="fas fa-save me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Crear Nutricionista
                             </button>
                         </div>
@@ -116,4 +117,5 @@
     </div>
 </div>
 {% endblock %}
+
 

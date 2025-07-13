@@ -71,3 +71,17 @@ class Valoracion(models.Model):
             self.grasas_g is not None,
             self.calorias_totales is not None
         ])
+    
+    @property
+    def porcentaje_grasa_corporal(self):
+        """Calcula el porcentaje de grasa corporal"""
+        if self.peso_kg > 0:
+            return (self.kg_grasa / self.peso_kg) * 100
+        return 0
+    
+    @property
+    def porcentaje_musculo(self):
+        """Calcula el porcentaje de músculo (proteína) corporal"""
+        if self.peso_kg > 0:
+            return (self.kg_proteinas / self.peso_kg) * 100
+        return 0

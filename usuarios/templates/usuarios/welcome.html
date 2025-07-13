@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Bienvenida - Nutri Gemini{% endblock %}
 
@@ -6,63 +6,64 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist" id="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab">General</a>
+                    <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-selected="true">General</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pacientes-tab" data-bs-toggle="tab" href="#pacientes" role="tab">Pacientes</a>
+                    <a class="nav-link" id="pacientes-tab" data-bs-toggle="tab" href="#pacientes" role="tab" aria-selected="false">Pacientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="nutricionistas-tab" data-bs-toggle="tab" href="#nutricionistas" role="tab">Nutricionistas</a>
+                    <a class="nav-link" id="nutricionistas-tab" data-bs-toggle="tab" href="#nutricionistas" role="tab" aria-selected="false">Nutricionistas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="administradores-tab" data-bs-toggle="tab" href="#administradores" role="tab">Administradores</a>
+                    <a class="nav-link" id="administradores-tab" data-bs-toggle="tab" href="#administradores" role="tab" aria-selected="false">Administradores</a>
                 </li>
             </ul>
         </div>
         <div class="card-body" style="padding: 50px;">
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="general" role="tabpanel">
-                    <h5 class="card-title mb-5">¡Bienvenido a Nutri Gemini! 🌟</h5>
-                    <p class="card-text mb-5">Nutri Gemini es tu asistente personal nutricional, combinando conocimiento y tecnología para apoyar tu camino hacia una salud óptima. 🚀</p>
-                    <ul class="list-unstyled">
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Explora las mejores prácticas nutricionales 📚</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Utiliza los beneficios de la inteligencia artificial 🤖</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Mejora la experiencia para profesionales y pacientes 👥</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Interfaz intuitiva y fácil de usar 🎯</li>
-                    </ul>
+                <div class="tab-content" role="region" aria-labelledby="tablist">
+                    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab" tabindex="0">
+                        <h5 class="card-title mb-5">¡Bienvenido a Nutri Gemini! 🌟</h5>
+                        <p class="card-text mb-5">Nutri Gemini es tu asistente personal nutricional, combinando conocimiento y tecnología para apoyar tu camino hacia una salud óptima. 🚀</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Explora las mejores prácticas nutricionales 📚</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Utiliza los beneficios de la inteligencia artificial 🤖</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Mejora la experiencia para profesionales y pacientes 👥</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Interfaz intuitiva y fácil de usar 🎯</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="pacientes" role="tabpanel" aria-labelledby="pacientes-tab" tabindex="0">
+                        <h5 class="card-title mb-5">Para Pacientes 😊</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Accede a tus valoraciones en tiempo real 📈</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Sigue tu progreso con gráficos interactivos 📊</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Recibe recomendaciones personalizadas para una salud óptima 💪</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Visualiza tu evolución nutricional con reportes detallados 📋</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="nutricionistas" role="tabpanel" aria-labelledby="nutricionistas-tab" tabindex="0">
+                        <h5 class="card-title mb-5">Para Nutricionistas 🥼</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Administra a tus pacientes con facilidad 👩‍⚕️</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Accede a herramientas avanzadas de valoración 🧪</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Personaliza los planes nutritivos de cada paciente 💼</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Genera reportes profesionales con análisis de IA 🤖</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="administradores" role="tabpanel" aria-labelledby="administradores-tab" tabindex="0">
+                        <h5 class="card-title mb-5">Para Administradores 🔧</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Monitorea el uso de la plataforma con análisis detallados 📊</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Gestiona usuarios y permisos con facilidad 🔑</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Opera utilizando la última tecnología de asistencia nutricional 🚀</li>
+                            <li class="mb-4"><i class="fas fa-check-circle text-success me-2" aria-hidden="true"></i>Supervisa estadísticas completas del sistema 📊</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="pacientes" role="tabpanel">
-                    <h5 class="card-title mb-5">Para Pacientes 😊</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Accede a tus valoraciones en tiempo real 📊</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Sigue tu progreso con gráficos interactivos 📈</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Recibe recomendaciones personalizadas para una salud óptima 💪</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Visualiza tu evolución nutricional con reportes detallados 📋</li>
-                    </ul>
-                </div>
-                <div class="tab-pane fade" id="nutricionistas" role="tabpanel">
-                    <h5 class="card-title mb-5">Para Nutricionistas 🥼</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Administra a tus pacientes con facilidad 👩‍⚕️</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Accede a herramientas avanzadas de valoración 🧪</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Personaliza los planes nutritivos de cada paciente 💼</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Genera reportes profesionales con análisis de IA 🤖</li>
-                    </ul>
-                </div>
-                <div class="tab-pane fade" id="administradores" role="tabpanel">
-                    <h5 class="card-title mb-5">Para Administradores 🛠️</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Monitorea el uso de la plataforma con análisis detallados 📊</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Gestiona usuarios y permisos con facilidad 🔑</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Opera utilizando la última tecnología de asistencia nutricional 🚀</li>
-                        <li class="mb-4"><i class="fas fa-check-circle text-success me-2"></i>Supervisa estadísticas completas del sistema 📈</li>
-                    </ul>
-                </div>
-            </div>
             <a href="{% url 'login' %}" class="btn btn-primary-custom mt-4">Ir al Login</a>
         </div>
     </div>
 </div>
 {% endblock %}
+

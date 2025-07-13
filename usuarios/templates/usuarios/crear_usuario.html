@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Crear Usuario{% endblock %}
@@ -11,29 +11,30 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary me-3">
-                            <i class="fas fa-arrow-left"></i>
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
                         </a>
                         <h2 class="mb-0">
-                            <i class="fas fa-user-plus text-primary me-2"></i>
+                            <i class="fas fa-user-plus text-primary me-2" aria-hidden="true"></i>
                             Crear Nuevo Usuario
                         </h2>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="post" id="formCrearUsuario">
+                    <form method="post" id="formCrearUsuario" aria-label="Formulario para crear nuevo usuario">
                         {% csrf_token %}
                         
                         <!-- Datos Básicos -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">
-                                <i class="fas fa-user me-2"></i>
+                                <i class="fas fa-user me-2" aria-hidden="true"></i>
                                 Datos Básicos
                             </h5>
                             
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="first_name" class="form-label">Nombre *</label>
-                                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" required aria-required="true" aria-describedby="nombre-help">
+                                    <div id="nombre-help" class="visually-hidden">Campo obligatorio para el nombre del usuario</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="last_name" class="form-label">Apellidos *</label>
@@ -68,7 +69,7 @@
                         <!-- Tipo de Usuario -->
                         <div class="mb-4">
                             <h5 class="text-primary mb-3">
-                                <i class="fas fa-user-tag me-2"></i>
+                                <i class="fas fa-user-tag me-2" aria-hidden="true"></i>
                                 Tipo de Usuario
                             </h5>
                             
@@ -88,7 +89,7 @@
                         <!-- Datos Específicos para Nutricionista -->
                         <div id="datosNutricionista" class="mb-4" style="display: none;">
                             <h5 class="text-success mb-3">
-                                <i class="fas fa-user-md me-2"></i>
+                                <i class="fas fa-user-md me-2" aria-hidden="true"></i>
                                 Datos Profesionales
                             </h5>
                             
@@ -118,12 +119,12 @@
                         
                         <!-- Botones -->
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">
-                                <i class="fas fa-times me-2"></i>
+                            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary" aria-label="Cancelar y volver a la lista de usuarios">
+                                <i class="fas fa-times me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Cancelar
                             </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>
+                            <button type="submit" class="btn btn-primary" aria-label="Crear nuevo usuario">
+                                <i class="fas fa-save me-2" aria-hidden="true" aria-hidden="true"></i>
                                 Crear Usuario
                             </button>
                         </div>
@@ -149,4 +150,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endblock %}
+
 

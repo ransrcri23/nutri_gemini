@@ -5,164 +5,65 @@
 
 {% block extra_css %}
 <style>
-/* Estilos para el plan de comidas timeline */
-.plan-comidas {
+
+
+/* Estilos simplificados para el plan de comidas */
+.plan-comidas-content {
     max-width: 100%;
     margin: 0 auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
 }
 
-.plan-comidas .timeline {
-    position: relative;
-    padding-left: 0;
-    margin: 0;
-}
-
-.plan-comidas .time-item {
+.plan-comidas-content .time-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 2rem;
-    position: relative;
-    padding: 0;
-}
-
-.plan-comidas .time-item:not(:last-child)::before {
-    content: '';
-    position: absolute;
-    left: 50px;
-    top: 60px;
-    width: 3px;
-    height: calc(100% + 15px);
-    background: linear-gradient(180deg, #28a745, #20c997);
-    border-radius: 2px;
-    z-index: 0;
-}
-
-.plan-comidas .time-hour {
-    min-width: 120px;
-    max-width: 120px;
-    text-align: center;
-    margin-right: 1.5rem;
-    background: linear-gradient(135deg, #fff, #f8f9fa);
-    border: 2px solid #28a745;
-    border-radius: 15px;
-    padding: 0.75rem 0.5rem;
-    position: relative;
-    z-index: 2;
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
-    transition: all 0.3s ease;
-}
-
-.plan-comidas .time-hour:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
-}
-
-.plan-comidas .time-hour i {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 1.1rem;
-}
-
-.plan-comidas .time-hour .fw-bold {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #28a745;
-}
-
-.plan-comidas .time-content {
-    flex: 1;
-    background: linear-gradient(135deg, #fff, #f8f9fa);
-    border-radius: 15px;
-    padding: 1.25rem;
-    border: 1px solid #e9ecef;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    position: relative;
-    z-index: 1;
-    transition: all 0.3s ease;
-}
-
-.plan-comidas .time-content:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-.plan-comidas .time-content h6 {
-    margin-bottom: 0.75rem;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.plan-comidas .time-content h6 i {
-    margin-right: 0.5rem;
-    font-size: 1.2rem;
-}
-
-.plan-comidas .macros-distribution {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.plan-comidas .macros-distribution .badge {
-    font-size: 0.85rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 8px;
-    font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.plan-comidas .daily-summary {
-    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-    border-radius: 15px;
-    padding: 1.5rem;
-    border: 2px solid #2196f3;
-    text-align: center;
-    margin-top: 2rem;
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
-}
-
-.plan-comidas .daily-summary h6 {
-    font-size: 1.2rem;
-    font-weight: 600;
     margin-bottom: 1rem;
-    color: #1976d2;
+    padding: 0.5rem;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
 }
 
-.plan-comidas .daily-summary .macros-distribution {
-    justify-content: center;
-    gap: 0.75rem;
-}
-
-.plan-comidas .daily-summary .badge {
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem;
+.plan-comidas-content .time-hour {
+    width: 80px;
+    text-align: center;
+    background: #ffffff;
+    color: #17a2b8;
+    padding: 0.3rem;
+    margin-right: 0.75rem;
+    border-radius: 5px;
+    border: 2px solid #17a2b8;
     font-weight: 600;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .plan-comidas .time-item {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .plan-comidas .time-hour {
-        margin-right: 0;
-        margin-bottom: 1rem;
-        align-self: flex-start;
-        min-width: auto;
-        max-width: 150px;
-    }
-    
-    .plan-comidas .time-item:not(:last-child)::before {
-        display: none;
-    }
-    
-    .plan-comidas .macros-distribution {
-        justify-content: flex-start;
-    }
+.plan-comidas-content .time-content {
+    flex: 1;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
 }
+
+.plan-comidas-content .time-content h6 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.plan-comidas-content .macros-distribution {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.plan-comidas-content .macros-distribution .badge {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+}
+
 </style>
 {% endblock %}
 
@@ -173,11 +74,11 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <a href="{% url 'mis_valoraciones' %}" class="btn btn-outline-secondary me-3">
-                            <i class="fas fa-arrow-left"></i>
+                        <a href="{% url 'mis_valoraciones' %}" class="btn btn-outline-secondary me-3" aria-label="Volver a mis valoraciones">
+                            <i class="fas fa-arrow-left" aria-hidden="true" aria-hidden="true"></i>
                         </a>
                         <h2 class="mb-0">
-                            <i class="fas fa-chart-line text-primary me-2"></i>
+                            <i class="fas fa-chart-line text-primary me-2" aria-hidden="true"></i>
                             Valoración del {{ valoracion.fecha_creacion|date:"d/m/Y" }}
                         </h2>
                     </div>
@@ -186,7 +87,7 @@
                     <!-- Composición Corporal -->
                     <div class="mb-5">
                         <h5 class="text-primary mb-4">
-                            <i class="fas fa-user-circle me-2"></i>
+                            <i class="fas fa-user-circle me-2" aria-hidden="true"></i>
                             Composición Corporal
                         </h5>
                         
@@ -194,7 +95,7 @@
                             <div class="col-md-6 mb-3">
                                 <div class="card bg-light h-100">
                                     <div class="card-body text-center">
-                                        <i class="fas fa-weight fa-2x text-primary mb-2"></i>
+                                        <i class="fas fa-weight fa-2x text-primary mb-2" aria-hidden="true"></i>
                                         <h4 class="text-primary mb-1">{{ valoracion.peso_kg }} kg</h4>
                                         <small class="text-muted">Peso Total</small>
                                     </div>
@@ -203,7 +104,7 @@
                             <div class="col-md-6 mb-3">
                                 <div class="card bg-light h-100">
                                     <div class="card-body text-center">
-                                        <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                                        <i class="fas fa-tint fa-2x text-info mb-2" aria-hidden="true"></i>
                                         <h4 class="text-info mb-1">{{ valoracion.litros_agua }} L</h4>
                                         <small class="text-muted">Agua Corporal</small>
                                     </div>
@@ -214,21 +115,21 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div class="text-center p-3 border rounded">
-                                    <i class="fas fa-fire text-danger mb-2"></i>
+                                    <i class="fas fa-fire text-danger mb-2" aria-hidden="true"></i>
                                     <h6 class="text-danger mb-1">{{ valoracion.kg_grasa }} kg</h6>
                                     <small class="text-muted">Grasa</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="text-center p-3 border rounded">
-                                    <i class="fas fa-dumbbell text-warning mb-2"></i>
+                                    <i class="fas fa-dumbbell text-warning mb-2" aria-hidden="true"></i>
                                     <h6 class="text-warning mb-1">{{ valoracion.kg_proteinas }} kg</h6>
                                     <small class="text-muted">Músculo/Proteínas</small>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="text-center p-3 border rounded">
-                                    <i class="fas fa-bone text-secondary mb-2"></i>
+                                    <i class="fas fa-bone text-secondary mb-2" aria-hidden="true"></i>
                                     <h6 class="text-secondary mb-1">{{ valoracion.kg_minerales }} kg</h6>
                                     <small class="text-muted">Minerales/Huesos</small>
                                 </div>
@@ -240,7 +141,7 @@
                     {% if valoracion.carbohidratos_g %}
                         <div class="mb-5">
                             <h5 class="text-success mb-4">
-                                <i class="fas fa-utensils me-2"></i>
+                                <i class="fas fa-utensils me-2" aria-hidden="true"></i>
                                 Plan Nutricional Recomendado
                             </h5>
                             
@@ -249,7 +150,7 @@
                                     <div class="card border-success">
                                         <div class="card-header bg-success text-white text-center">
                                             <h5 class="mb-0">
-                                                <i class="fas fa-fire me-2"></i>
+                                                <i class="fas fa-fire me-2" aria-hidden="true"></i>
                                                 {{ valoracion.calorias_totales }} kcal/día
                                             </h5>
                                         </div>
@@ -266,7 +167,7 @@
                                         <div class="col-12 mb-3">
                                             <div class="card border-info">
                                                 <div class="card-body text-center">
-                                                    <i class="fas fa-bread-slice text-info fa-2x mb-2"></i>
+                                                    <i class="fas fa-bread-slice text-info fa-2x mb-2" aria-hidden="true"></i>
                                                     <h5 class="text-info mb-1">{{ valoracion.carbohidratos_g }}g</h5>
                                                     <small class="text-muted">Carbohidratos</small>
                                                 </div>
@@ -275,7 +176,7 @@
                                         <div class="col-6 mb-3">
                                             <div class="card border-warning">
                                                 <div class="card-body text-center">
-                                                    <i class="fas fa-drumstick-bite text-warning fa-lg mb-2"></i>
+                                                    <i class="fas fa-drumstick-bite text-warning fa-lg mb-2" aria-hidden="true"></i>
                                                     <h6 class="text-warning mb-1">{{ valoracion.proteinas_g }}g</h6>
                                                     <small class="text-muted">Proteínas</small>
                                                 </div>
@@ -284,7 +185,7 @@
                                         <div class="col-6 mb-3">
                                             <div class="card border-danger">
                                                 <div class="card-body text-center">
-                                                    <i class="fas fa-cheese text-danger fa-lg mb-2"></i>
+                                                    <i class="fas fa-cheese text-danger fa-lg mb-2" aria-hidden="true"></i>
                                                     <h6 class="text-danger mb-1">{{ valoracion.grasas_g }}g</h6>
                                                     <small class="text-muted">Grasas</small>
                                                 </div>
@@ -301,17 +202,17 @@
                     <div class="card card-custom mb-5">
                         <div class="card-header">
                             <h5 class="mb-0">
-                                <i class="fas fa-clock me-2 text-success"></i>Plan de Comidas Diarias
+                                <i class="fas fa-clock me-2 text-success" aria-hidden="true"></i>Plan de Comidas Diarias
                                 <small class="text-muted ms-2">Horarios y macronutrientes por comida</small>
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div class="bg-light p-4 rounded-3">
+                            <div class="plan-comidas-content p-4 rounded-3">
                                 {{ valoracion.plan_comidas|safe }}
                             </div>
                             <div class="mt-3">
                                 <small class="text-muted">
-                                    <i class="fas fa-info-circle me-1"></i>
+                                    <i class="fas fa-info-circle me-1" aria-hidden="true"></i>
                                     Este plan muestra los horarios recomendados para cada comida y la distribución de macronutrientes.
                                     Sigue estos horarios para optimizar tu nutrición diaria.
                                 </small>
@@ -325,7 +226,7 @@
                     <div class="card card-custom mb-5">
                         <div class="card-header">
                             <h5 class="mb-0">
-                                <i class="fas fa-table me-2 text-info"></i>Tabla de Equivalencias Funcionales
+                                <i class="fas fa-table me-2 text-info" aria-hidden="true"></i>Tabla de Equivalencias Funcionales
                                 <small class="text-muted ms-2">Personalizada para ti</small>
                             </h5>
                         </div>
@@ -335,7 +236,7 @@
                             </div>
                             <div class="mt-3">
                                 <small class="text-muted">
-                                    <i class="fas fa-info-circle me-1"></i>
+                                    <i class="fas fa-info-circle me-1" aria-hidden="true"></i>
                                     Esta tabla muestra las cantidades de alimentos que aportan porciones estándar de cada macronutriente.
                                     Úsala como guía para planificar tus comidas diarias.
                                 </small>
@@ -349,7 +250,7 @@
                     <div class="card card-custom mb-5">
                         <div class="card-header">
                             <h5 class="mb-0">
-                                <i class="fas fa-lightbulb me-2 text-warning"></i>Recomendaciones Nutricionales
+                                <i class="fas fa-lightbulb me-2 text-warning" aria-hidden="true"></i>Recomendaciones Nutricionales
                             </h5>
                         </div>
                         <div class="card-body">
@@ -364,7 +265,7 @@
                     {% if valoracion.notas %}
                         <div class="mb-4">
                             <h5 class="text-info mb-3">
-                                <i class="fas fa-sticky-note me-2"></i>
+                                <i class="fas fa-sticky-note me-2" aria-hidden="true"></i>
                                 Notas del Nutricionista
                             </h5>
                             <div class="card bg-light">
@@ -378,11 +279,11 @@
                 <div class="card-footer">
                     <div class="d-flex justify-content-between">
                         <a href="{% url 'mis_valoraciones' %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>
+                            <i class="fas fa-arrow-left me-2" aria-hidden="true"></i>
                             Volver a Mis Valoraciones
                         </a>
                         <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-home me-2"></i>
+                            <i class="fas fa-home me-2" aria-hidden="true"></i>
                             Ir al Dashboard
                         </a>
                     </div>
@@ -392,4 +293,5 @@
     </div>
 </div>
 {% endblock %}
+
 

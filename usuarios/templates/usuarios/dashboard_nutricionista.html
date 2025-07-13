@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Dashboard Nutricionista - Nutri Gemini{% endblock %}
 
@@ -11,14 +11,14 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <h2 class="mb-0">
-                            <i class="fas fa-user-md me-2"></i>
+                            <i class="fas fa-user-md me-2" aria-hidden="true"></i>
                             Dashboard Nutricionista
                         </h2>
                         <p class="mb-0 mt-2 opacity-75">Bienvenido {{ user.nombre_completo }}</p>
                     </div>
                     <div class="col-auto">
                         <span class="badge bg-success fs-6">
-                            <i class="fas fa-stethoscope me-1"></i>Nutricionista
+                            <i class="fas fa-stethoscope me-1" aria-hidden="true"></i>Nutricionista
                         </span>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
             <div class="col-md-6 mb-3">
                 <div class="card stats-card h-100">
                     <div class="card-body text-center">
-                        <i class="fas fa-user-injured fa-2x text-info mb-3"></i>
+                        <i class="fas fa-user-injured fa-2x text-info mb-3" aria-hidden="true" aria-hidden="true"></i>
                         <h3 class="text-info">{{ total_pacientes }}</h3>
                         <p class="mb-0 small text-muted">Pacientes Registrados</p>
                     </div>
@@ -39,7 +39,7 @@
             <div class="col-md-6 mb-3">
                 <div class="card stats-card h-100">
                     <div class="card-body text-center">
-                        <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
+                        <i class="fas fa-chart-line fa-2x text-success mb-3" aria-hidden="true" aria-hidden="true"></i>
                         <h3 class="text-success">{{ total_valoraciones }}</h3>
                         <p class="mb-0 small text-muted">Valoraciones Totales</p>
                     </div>
@@ -52,24 +52,24 @@
         			    <div class="col-12">
         			        <div class="card card-custom">
         			            <div class="card-header">
-        			                <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Principales</h5>
+        			                <h5 class="mb-0"><i class="fas fa-bolt me-2" aria-hidden="true"></i>Acciones Principales</h5>
         			            </div>
         			            <div class="card-body">
         			                <div class="row">
                                     <div class="col-md-4 mb-2">
-                                        <a href="{% url 'crear_paciente' %}" class="btn btn-success w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-user-plus me-2"></i>Crear Paciente
-                                        </a>
+                                    <a href="{% url 'crear_paciente' %}" class="btn btn-success w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;" aria-label="Crear nuevo paciente">
+                                        <i class="fas fa-user-plus me-2" aria-hidden="true" aria-hidden="true"></i>Crear Paciente
+                                    </a>
                                     </div>
                                     <div class="col-md-4 mb-2">
-                                        <a href="{% url 'lista_pacientes' %}" class="btn btn-primary-custom w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-users me-2"></i>Ver Pacientes
-                                        </a>
+                                    <a href="{% url 'lista_pacientes' %}" class="btn btn-primary-custom w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;" aria-label="Ver lista de pacientes">
+                                        <i class="fas fa-users me-2" aria-hidden="true" aria-hidden="true"></i>Ver Pacientes
+                                    </a>
                                     </div>
                                     <div class="col-md-4 mb-2">
-                                        <a href="{% url 'lista_valoraciones' %}" class="btn btn-info w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-chart-line me-2"></i>Valoraciones
-                                        </a>
+                                    <a href="{% url 'lista_valoraciones' %}" class="btn btn-info w-100" style="height: 50px; display: flex; align-items: center; justify-content: center;" aria-label="Ver lista de valoraciones">
+                                        <i class="fas fa-chart-line me-2" aria-hidden="true" aria-hidden="true"></i>Valoraciones
+                                    </a>
                                     </div>
         			                </div>
         			            </div>
@@ -82,14 +82,14 @@
             <div class="col-md-6">
                 <div class="card card-custom">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Pacientes Recientes</h5>
+                        <h5 class="mb-0"><i class="fas fa-clock me-2" aria-hidden="true"></i>Pacientes Recientes</h5>
                     </div>
                     <div class="card-body">
                         {% if pacientes_recientes %}
                             {% for paciente in pacientes_recientes %}
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0">
-                                    <i class="fas fa-user-injured fa-lg text-info"></i>
+                                    <i class="fas fa-user-injured fa-lg text-info" aria-hidden="true"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <div class="fw-bold">{{ paciente.nombre }} {{ paciente.apellidos }}</div>
@@ -97,7 +97,7 @@
                                 </div>
                                 <div class="flex-shrink-0">
                                     <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
             <div class="col-md-6">
                 <div class="card card-custom">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-activity me-2"></i>Valoraciones Recientes</h5>
+                        <h5 class="mb-0"><i class="fas fa-activity me-2" aria-hidden="true"></i>Valoraciones Recientes</h5>
                     </div>
                     <div class="card-body">
                         {% if valoraciones_recientes %}
@@ -120,9 +120,9 @@
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0">
                                     {% if valoracion.tiene_macronutrientes %}
-                                        <i class="fas fa-check-circle fa-lg text-success"></i>
+                                        <i class="fas fa-check-circle fa-lg text-success" aria-hidden="true"></i>
                                     {% else %}
-                                        <i class="fas fa-clock fa-lg text-warning"></i>
+                                        <i class="fas fa-clock fa-lg text-warning" aria-hidden="true"></i>
                                     {% endif %}
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="flex-shrink-0">
                                     <a href="{% url 'detalle_valoracion' valoracion.id %}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
                             </div>
@@ -146,4 +146,5 @@
     </div>
 </div>
 {% endblock %}
+
 

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block title %}Pacientes - Nutri Gemini{% endblock %}
 
@@ -22,16 +22,16 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <h2 class="mb-0">
-                            <i class="fas fa-users me-2"></i>
+                            <i class="fas fa-users me-2" aria-hidden="true"></i>
                             Pacientes Registrados
                         </h2>
                         <p class="mb-0 mt-2 opacity-75">Gestiona todos los pacientes del sistema</p>
                     </div>
                     <div class="col-md-6">
-                        <form method="GET" class="d-flex gap-2">
-                            <input type="search" name="q" value="{{ query|default:'' }}" class="form-control" placeholder="Buscar por nombre, apellidos, email...">
-                            <button type="submit" class="btn btn-light">
-                                <i class="fas fa-search"></i>
+                        <form method="GET" class="d-flex gap-2" role="search" aria-label="Buscar pacientes">
+                            <input type="search" name="q" value="{{ query|default:'' }}" class="form-control" placeholder="Buscar por nombre, apellidos, email..." aria-label="Campo de búsqueda de pacientes">
+                            <button type="submit" class="btn btn-light" aria-label="Buscar pacientes">
+                                <i class="fas fa-search" aria-hidden="true" aria-hidden="true"></i>
                             </button>
                         </form>
                     </div>
@@ -55,8 +55,8 @@
             </div>
             <div class="col-md-4">
                 <div class="d-grid gap-2 h-100">
-                    <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom btn-lg d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user-plus me-2"></i>Nuevo Paciente
+                    <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom btn-lg d-flex align-items-center justify-content-center" aria-label="Crear un nuevo paciente">
+                        <i class="fas fa-user-plus me-2" aria-hidden="true" aria-hidden="true"></i>Nuevo Paciente
                     </a>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                                         </a>
                                     </h5>
                                     <p class="text-muted small mb-2">
-                                        <i class="fas fa-birthday-cake me-1"></i>
+                                        <i class="fas fa-birthday-cake me-1" aria-hidden="true"></i>
                                         {{ paciente.edad }} años • {{ paciente.estatura }}m
                                     </p>
                                 </div>
@@ -98,18 +98,18 @@
                             <!-- Información Resumida -->
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center small text-muted mb-2">
-                                    <span><i class="fas fa-briefcase me-1"></i>{{ paciente.ocupacion|truncatechars:20 }}</span>
+                                    <span><i class="fas fa-briefcase me-1" aria-hidden="true"></i>{{ paciente.ocupacion|truncatechars:20 }}</span>
                                     {% if paciente.correo_electronico %}
-                                        <span><i class="fas fa-envelope me-1"></i>{{ paciente.correo_electronico|truncatechars:15 }}</span>
+                                        <span><i class="fas fa-envelope me-1" aria-hidden="true"></i>{{ paciente.correo_electronico|truncatechars:15 }}</span>
                                     {% endif %}
                                 </div>
                                 <div class="bg-light p-2 rounded small">
                                     <div class="mb-1">
-                                        <i class="fas fa-dumbbell me-1 text-success"></i>
+                                        <i class="fas fa-dumbbell me-1 text-success" aria-hidden="true"></i>
                                         <strong>Deporte:</strong> {{ paciente.deportes|truncatechars:25 }}
                                     </div>
                                     <div class="text-muted">
-                                        <i class="fas fa-target me-1 text-primary"></i>
+                                        <i class="fas fa-target me-1 text-primary" aria-hidden="true"></i>
                                         {{ paciente.objetivos|truncatechars:40 }}
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                             {% if paciente.alergias %}
                             <div class="mb-3">
                                 <div class="alert alert-warning py-2 small">
-                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    <i class="fas fa-exclamation-triangle me-1" aria-hidden="true"></i>
                                     <strong>Alergias:</strong> {{ paciente.alergias|truncatechars:40 }}
                                 </div>
                             </div>
@@ -130,20 +130,20 @@
                         <div class="card-footer bg-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    <i class="fas fa-calendar me-1"></i>
+                                    <i class="fas fa-calendar me-1" aria-hidden="true"></i>
                                     {{ paciente.fecha_creacion|date:"d/m/Y" }}
                                 </small>
                                 <div>
-                                    <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-eye me-1"></i>Ver
+                                    <a href="{% url 'detalle_paciente' paciente.id %}" class="btn btn-outline-primary btn-sm" aria-label="Ver detalles de {{ paciente.nombre }} {{ paciente.apellidos }}">
+                                        <i class="fas fa-eye me-1" aria-hidden="true" aria-hidden="true"></i>Ver
                                     </a>
                                     {% if user.is_authenticated and user.tipo_usuario == 'nutricionista' or user.tipo_usuario == 'administrador' %}
-                                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm">
-                                            <i class="fas fa-edit me-1"></i>Editar
+                                        <a href="{% url 'editar_paciente' paciente.id %}" class="btn btn-warning btn-sm" aria-label="Editar datos de {{ paciente.nombre }} {{ paciente.apellidos }}">
+                                            <i class="fas fa-edit me-1" aria-hidden="true" aria-hidden="true"></i>Editar
                                         </a>
                                     {% endif %}
-                                    <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-plus me-1"></i>Valoración
+                                    <a href="{% url 'crear_valoracion' paciente.id %}" class="btn btn-primary btn-sm" aria-label="Crear nueva valoración para {{ paciente.nombre }} {{ paciente.apellidos }}">
+                                        <i class="fas fa-plus me-1" aria-hidden="true" aria-hidden="true"></i>Valoración
                                     </a>
                                 </div>
                             </div>
@@ -162,12 +162,12 @@
                             {% if page_obj.has_previous %}
                                 <li class="page-item">
                                     <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}">
-                                        <i class="fas fa-angle-double-left"></i>
+                                        <i class="fas fa-angle-double-left" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li class="page-item">
                                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
-                                        <i class="fas fa-angle-left"></i>
+                                        <i class="fas fa-angle-left" aria-hidden="true"></i>
                                     </a>
                                 </li>
                             {% endif %}
@@ -187,12 +187,12 @@
                             {% if page_obj.has_next %}
                                 <li class="page-item">
                                     <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
-                                        <i class="fas fa-angle-right"></i>
+                                        <i class="fas fa-angle-right" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li class="page-item">
                                     <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">
-                                        <i class="fas fa-angle-double-right"></i>
+                                        <i class="fas fa-angle-double-right" aria-hidden="true"></i>
                                     </a>
                                 </li>
                             {% endif %}
@@ -206,23 +206,23 @@
             <div class="card card-custom">
                 <div class="card-body text-center py-5">
                     {% if query %}
-                        <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                        <i class="fas fa-search fa-4x text-muted mb-4" aria-hidden="true"></i>
                         <h4 class="text-muted mb-3">No se encontraron pacientes</h4>
                         <p class="text-muted mb-4">
                             No hay pacientes que coincidan con "<strong>{{ query }}</strong>".
                         </p>
                         <a href="{% url 'lista_pacientes' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-times me-2"></i>Limpiar Búsqueda
+                            <i class="fas fa-times me-2" aria-hidden="true"></i>Limpiar Búsqueda
                         </a>
                     {% else %}
-                        <i class="fas fa-users fa-4x text-muted mb-4"></i>
+                        <i class="fas fa-users fa-4x text-muted mb-4" aria-hidden="true"></i>
                         <h4 class="text-muted mb-3">No hay pacientes registrados</h4>
                         <p class="text-muted mb-4">
                             Aún no tienes pacientes en el sistema. 
                             Comienza creando tu primer paciente.
                         </p>
                         <a href="{% url 'crear_paciente' %}" class="btn btn-primary-custom">
-                            <i class="fas fa-user-plus me-2"></i>Crear Primer Paciente
+                            <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Crear Primer Paciente
                         </a>
                     {% endif %}
                 </div>
@@ -231,4 +231,5 @@
     </div>
 </div>
 {% endblock %}
+
 

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Progreso de {{ paciente.nombre }} {{ paciente.apellidos }}{% endblock %}
@@ -19,22 +19,22 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <a href="{% url 'graficas_progreso' %}" class="btn btn-outline-secondary me-3">
-                        <i class="fas fa-arrow-left"></i>
+                    <a href="{% url 'graficas_progreso' %}" class="btn btn-outline-secondary me-3" aria-label="Volver a gráficas de progreso">
+                        <i class="fas fa-arrow-left" aria-hidden="true" aria-hidden="true"></i>
                     </a>
                     <h2 class="mb-0">
-                        <i class="fas fa-chart-line text-info me-2"></i>
+                        <i class="fas fa-chart-line text-info me-2" aria-hidden="true"></i>
                         Progreso de {{ paciente.nombre }} {{ paciente.apellidos }}
                     </h2>
                 </div>
                 <div class="card-body">
 
                     <div class="chart-container">
-                        <canvas id="pesoChart"></canvas>
+                    <canvas id="pesoChart" aria-label="Gráfico de progreso de peso" role="img"></canvas>
                     </div>
 
                     <div class="chart-container">
-                        <canvas id="grasaMusculoChart"></canvas>
+                    <canvas id="grasaMusculoChart" aria-label="Gráfico de grasa y músculo" role="img"></canvas>
                     </div>
 
                 </div>
@@ -108,3 +108,4 @@
 
 </script>
 {% endblock %}
+
