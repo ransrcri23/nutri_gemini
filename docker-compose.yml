@@ -1,29 +1,42 @@
 services:
   # Aplicación Django (usando Railway PostgreSQL)
   web:
-    build: .  # Construye la imagen desde el Dockerfile local
-    restart: always  # Reinicia automáticamente si falla
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
-      - "8000:8000"  # Mapea puerto 8000 del contenedor al puerto 8000 local
+      - "8000:8000"
     environment:
-      # Variables de entorno para el contenedor
-      - DEBUG=${DEBUG:-1}  # Modo debug activado por defecto
+      # Variables de entorno esenciales
+      - DEBUG=${DEBUG:-1}
       - DJANGO_SETTINGS_MODULE=nutricion_asistente.settings
-      # Conexión directa a Railway PostgreSQL (base de datos en la nube)
       - DATABASE_URL=postgresql://postgres:JyVlHYwbEzHjJcEdiMreERWdnDxIqvUZ@centerbeam.proxy.rlwy.net:16897/railway
-      # API Key de Gemini AI (se lee desde archivo .env)
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-AIzaSyBkPuWFRYgCQHf1nBEZnkqsIJ9pFvfMF6Q}
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-ggksd)x66gzov)wmhcrtp9iio#(y119gg#jrdu%)i&cspg*ep-}
+      - PYTHONPATH=/app
     env_file:
-      - .env  # Carga variables adicionales desde archivo .env
+      - .env
     volumes:
-      # Monta el código local para desarrollo en tiempo real
-      - .:/app
-      # Volumen persistente para archivos media (fotos, documentos, etc.)
+      # Solo montar media en producción, código se copia durante build
       - media_files:/app/media
+      - static_files:/app/staticfiles
     command: >
-      sh -c "python manage.py migrate &&
+      sh -c "echo 'Esperando conexión a base de datos...' &&
+             python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             echo 'Creando superusuario si no existe...' &&
+             python manage.py shell -c \"from usuarios.models import Usuario; Usuario.objects.filter(email='admin@nutricion.com').exists() or Usuario.objects.create_superuser('admin', 'admin@nutricion.com', 'admin123', tipo_usuario='administrador')\" &&
+             echo 'Iniciando servidor...' &&
              python manage.py runserver 0.0.0.0:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
 volumes:
   media_files:
+  static_files:
 

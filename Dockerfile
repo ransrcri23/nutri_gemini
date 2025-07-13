@@ -8,12 +8,14 @@ ENV PYTHONUNBUFFERED=1
 # Establecer directorio de trabajo
 WORKDIR /app
 
-# Instalar dependencias del sistema necesarias para PostgreSQL y otras librerías
+# Instalar dependencias del sistema necesarias
 RUN apt-get update && apt-get install -y \
     postgresql-client \
     build-essential \
     libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Copiar requirements.txt
 COPY requirements.txt /app/
