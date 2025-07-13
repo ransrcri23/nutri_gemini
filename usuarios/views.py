@@ -35,7 +35,14 @@ def home_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
     else:
-        return redirect('login')
+        return redirect('welcome')
+
+def welcome_view(request):
+    """Pantalla de bienvenida con información de la aplicación"""
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
+    return render(request, 'usuarios/welcome.html')
 
 
 # === VISTAS DE AUTENTICACIÓN ===
@@ -68,7 +75,7 @@ def logout_view(request):
         # Logout del usuario
         logout(request)
         messages.info(request, 'Has cerrado sesión exitosamente.')
-    return redirect('login')
+    return redirect('welcome')
 
 
 @login_required

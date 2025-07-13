@@ -59,7 +59,7 @@ ROOT_URLCONF = 'nutricion_asistente.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -146,7 +146,7 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 # Login/Logout URLs
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/auth/dashboard/'
-LOGOUT_REDIRECT_URL = '/auth/login/'
+LOGOUT_REDIRECT_URL = '/auth/welcome/'
 
 # Media files (for user photos)
 MEDIA_URL = '/media/'
