@@ -280,16 +280,6 @@ Responde ÚNICAMENTE con HTML limpio usando la siguiente estructura:
         
         <!-- Continúa con más comidas siguiendo el mismo patrón -->
     </div>
-    
-    <div class="daily-summary mt-4">
-        <h6><i class="fas fa-calculator text-info"></i> Total Diario</h6>
-        <div class="macros-distribution">
-            <small class="badge bg-primary me-1">{valoracion.carbohidratos_g}g carbohidratos</small>
-            <small class="badge bg-success me-1">{valoracion.proteinas_g}g proteínas</small>
-            <small class="badge bg-warning text-dark me-1">{valoracion.grasas_g}g grasas</small>
-            <small class="badge bg-danger">{valoracion.calorias_totales} kcal</small>
-        </div>
-    </div>
 </div>
 
 Responde ÚNICAMENTE con el HTML, sin explicaciones adicionales. Asegúrate de incluir todos los tiempos de comida necesarios y que los macronutrientes sumen correctamente.

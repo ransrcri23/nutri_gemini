@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,6 +11,9 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Alto Contraste CSS -->
+    <link rel="stylesheet" href="{% static 'css/high_contrast.css' %}">
     
     <style>
         body {
@@ -104,6 +108,45 @@
             border: none;
         }
         
+        /* Estilos específicos para alto contraste en login */
+        .high-contrast .login-container {
+            background: #333333 !important;
+            color: #ffff00 !important;
+            border: 2px solid #ffffff !important;
+        }
+        
+        .high-contrast .login-header {
+            background: #000000 !important;
+            color: #ffff00 !important;
+        }
+        
+        .high-contrast .input-group-text {
+            background-color: #222222 !important;
+            color: #ffff00 !important;
+            border: 2px solid #ffffff !important;
+        }
+        
+        .high-contrast .form-control {
+            background-color: #222222 !important;
+            color: #ffff00 !important;
+            border: 2px solid #ffffff !important;
+        }
+        
+        .high-contrast .btn-login {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+        }
+        
+        .high-contrast .btn-login:hover {
+            background: #cccccc !important;
+            color: #000000 !important;
+        }
+        
+        .high-contrast body {
+            background: #000000 !important;
+        }
+        
     </style>
 </head>
 <body>
@@ -166,8 +209,47 @@
         </div>
     </div>
     
+    <!-- Footer con botón de alto contraste -->
+    <div style="position: fixed; bottom: 20px; right: 20px;">
+        <button id="high-contrast-toggle" class="btn btn-outline-light btn-sm" title="Activar/Desactivar Alto Contraste" style="background: rgba(0,0,0,0.7); border: 1px solid #fff;">
+            <i class="fas fa-adjust"></i> Alto Contraste
+        </button>
+    </div>
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script de alto contraste -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('high-contrast-toggle');
+            
+            if (toggleButton) {
+                toggleButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const body = document.body;
+                    body.classList.toggle('high-contrast');
+                    const isHighContrast = body.classList.contains('high-contrast');
+                    localStorage.setItem('high-contrast', isHighContrast);
+                    
+                    // Actualizar texto del botón
+                    if (isHighContrast) {
+                        toggleButton.innerHTML = '<i class="fas fa-adjust"></i> Modo Normal';
+                    } else {
+                        toggleButton.innerHTML = '<i class="fas fa-adjust"></i> Alto Contraste';
+                    }
+                });
+            }
+            
+            // Aplicar estado guardado
+            if (localStorage.getItem('high-contrast') === 'true') {
+                document.body.classList.add('high-contrast');
+                if (toggleButton) {
+                    toggleButton.innerHTML = '<i class="fas fa-adjust"></i> Modo Normal';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 
