@@ -52,7 +52,7 @@
                             </h5>
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2" aria-hidden="true" aria-hidden="true"></i>
-                                <strong>Importante:</strong> Los componentes corporales deben sumar el peso total (tolerancia: Â±500g)
+                                <strong>Importante:</strong> Los componentes corporales deben sumar el peso total (tolerancia: ±500g)
                             </div>
                         </div>
                         
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                (parseFloat(inputs.agua.value) || 0);
         
         if (Math.abs(sumaComponentes - peso) > 0.5) {
-            if (!confirm('Los componentes no suman exactamente el peso total. Â¿Está seguro de continuar?')) {
+            if (!confirm('Los componentes no suman exactamente el peso total. ¿Está seguro de continuar?')) {
                 e.preventDefault();
             }
         }
