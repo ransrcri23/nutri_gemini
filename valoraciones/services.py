@@ -5,6 +5,7 @@ from django.conf import settings
 from typing import Dict, Optional
 from .models import Valoracion
 from pacientes.models import Paciente
+# Asegúrate de incluir aquí la lógica necesaria relacionada con NutricionCalculatorService.
 
 logger = logging.getLogger(__name__)
 
@@ -397,10 +398,11 @@ Por favor responde ÚNICAMENTE con el JSON válido, sin texto adicional.
             raise ValueError(f"Error parseando JSON de Gemini: {str(e)}. Respuesta: {respuesta}")
         except Exception as e:
             raise ValueError(f"Error procesando respuesta: {str(e)}")
-    
+   
     def actualizar_valoracion_con_macros(self, valoracion: Valoracion) -> Valoracion:
         """
         Calcula y actualiza los macronutrientes y tabla de equivalencias en una valoración.
+        Ahora usa el OrquestadorValoracion que aplica el principio de Single Responsibility.
         
         Args:
             valoracion: Instancia de Valoración a actualizar
@@ -411,48 +413,10 @@ Por favor responde ÚNICAMENTE con el JSON válido, sin texto adicional.
         Raises:
             Exception: Si hay error en el cálculo
         """
-        try:
-            # Calcular macronutrientes
-            macros = self.calcular_macronutrientes(valoracion)
-            
-            # Actualizar valoración con macronutrientes
-            valoracion.carbohidratos_g = macros['carbohidratos_g']
-            valoracion.proteinas_g = macros['proteinas_g']
-            valoracion.grasas_g = macros['grasas_g']
-            valoracion.calorias_totales = macros['calorias_totales']
-            valoracion.recomendaciones = macros['recomendaciones']
-            
-            # Guardar primero los macronutrientes
-            valoracion.save()
-            
-            # Ahora generar el plan de comidas (necesita los macros ya guardados)
-            try:
-                plan_comidas = self.calcular_plan_comidas(valoracion)
-                valoracion.plan_comidas = plan_comidas
-                valoracion.save()
-                logger.info(f"Plan de comidas generado para valoración ID {valoracion.id}")
-            except Exception as e:
-                # Si falla el plan de comidas, log el error pero no falle todo el proceso
-                logger.warning(f"Error generando plan de comidas para valoración ID {valoracion.id}: {str(e)}")
-                # La valoración queda con macronutrientes pero sin plan de comidas
-            
-            # Ahora generar la tabla de equivalencias (necesita los macros ya guardados)
-            try:
-                tabla_equivalencias = self.calcular_tabla_equivalencias(valoracion)
-                valoracion.tabla_equivalencias = tabla_equivalencias
-                valoracion.save()
-                logger.info(f"Tabla de equivalencias generada para valoración ID {valoracion.id}")
-            except Exception as e:
-                # Si falla la tabla de equivalencias, log el error pero no falle todo el proceso
-                logger.warning(f"Error generando tabla de equivalencias para valoración ID {valoracion.id}: {str(e)}")
-                # La valoración queda con macronutrientes pero sin tabla de equivalencias
-            
-            logger.info(f"Valoración ID {valoracion.id} actualizada con macronutrientes")
-            return valoracion
-            
-        except Exception as e:
-            logger.error(f"Error actualizando valoración con macros: {str(e)}")
-            raise
+        # Usar el OrquestadorValoracion que aplica Single Responsibility Principle
+        from .valoracion_orquestador import OrquestadorValoracion
+        orquestador = OrquestadorValoracion()
+        return orquestador.actualizar_valoracion_completa(valoracion)
     
     def regenerar_tabla_equivalencias(self, valoracion: Valoracion) -> Valoracion:
         """
@@ -514,5 +478,5 @@ Por favor responde ÚNICAMENTE con el JSON válido, sin texto adicional.
 
 
 # Instancia global del servicio
-nutricion_calculator = NutricionCalculatorService()
+# Ajustar para evitar importaciones circulares innecesarias
 

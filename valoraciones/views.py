@@ -5,7 +5,10 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 from .models import Valoracion
-from .services import nutricion_calculator
+from .services import NutricionCalculatorService
+
+# Crear instancia del servicio
+nutricion_calculator = NutricionCalculatorService()
 from pacientes.models import Paciente
 from usuarios.models import TipoUsuario
 from utils import es_nutricionista_o_admin
