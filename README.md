@@ -1,105 +1,57 @@
-# Nutri Gemini 🥗
+# 🥗 Nutri Gemini
 
-Sistema de gestión nutricional con inteligencia artificial usando Django y Google Gemini AI.
+Sistema inteligente de gestión nutricional que utiliza **Google Gemini AI** para generar planes alimentarios personalizados, calcular macronutrientes y crear tablas de equivalencias adaptadas a cada paciente.
 
-## Instalación y Ejecución
+## ✨ Funcionalidades
 
-### Prerrequisitos
-- **Docker Desktop**: https://www.docker.com/products/docker-desktop/
-- **Git**: https://git-scm.com/downloads
+- 🧠 **Cálculo inteligente de macronutrientes** con Gemini AI
+- 📋 **Planes de comidas personalizados** con horarios y distribución nutricional
+- 📊 **Tablas de equivalencias alimentarias** adaptadas por paciente
+- 📈 **Gráficas** de progreso de pacientes
+- 👥 **Gestión completa de pacientes** con valoraciones corporales
+- 📈 **Dashboard interactivo** para administradores, nutricionistas y pacientes
+- ♿ **Modo alto contraste** para accesibilidad
 
-### Pasos para ejecutar
+## 🏗️ Arquitectura
 
-1. **Clonar el proyecto**
+- **Backend**: Django 5.2.2 + Python
+- **AI**: Google Gemini AI
+- **Base de datos**: PostgreSQL
+- **Frontend**: Bootstrap 5 + JavaScript
+- **Contenedores**: Docker + Docker Compose
+
+## 🚀 Guía de ejecución
+
+1. **Clonar y configurar**
    ```bash
    git clone https://github.com/ransrcri23/nutri_gemini.git
    cd nutri_gemini
+   cp example.env .env  # Luego editar .env con tus credenciales
    ```
 
-2. **Configurar variables de entorno**
-   ```bash
-   # En Windows (PowerShell/CMD)
-   copy example.env .env
-   
-   # En Linux/Mac
-   cp example.env .env
-   ```
-   
-   ⚠️ **IMPORTANTE**: Debes configurar tus propias credenciales en el archivo `.env`:
-   
-   - **GOOGLE_API_KEY**: Obtén tu API key desde [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - **SECRET_KEY**: Genera una clave desde [Django Secret Key Generator](https://djecrety.ir/)
-   - **DATABASE_URL**: Configura tu base de datos PostgreSQL
-   
-   📖 Ver [SECURITY_SETUP.md](SECURITY_SETUP.md) para instrucciones detalladas.
+2. **Configurar variables en .env**
+   - `GOOGLE_API_KEY`: [Obtener desde Google AI Studio](https://makersuite.google.com/app/apikey)
+   - `DATABASE_URL`: Tu URL de PostgreSQL
 
-3. **Iniciar la aplicación**
+3. **Ejecutar con Docker**
    ```bash
    docker-compose up --build
    ```
-   
-   La primera vez tomará unos minutos para descargar dependencias.
 
 4. **Acceder a la aplicación**
-   - **URL**: http://localhost:8000
-   - **Usuario Administrador**: `admin@nutricion.com`
-   - **Contraseña**: `admin123`
+   - URL: http://localhost:8000
+   - Admin: `admin@nutricion.com` / `admin123`
 
-### Comandos básicos
+5. **Detener** (cuando termines)
+   ```bash
+   docker-compose down
+   ```
 
-```bash
-# Detener la aplicación
-docker-compose down
+## ⚠️ Disclaimers
 
-# Ver logs en tiempo real
-docker-compose logs -f
+- **Configuración requerida**: Debes configurar tus propias credenciales en `.env`
+- **API Key**: Necesitas una `GOOGLE_API_KEY` válida para que funcione la IA
+- **Base de datos**: Requiere una instancia PostgreSQL configurada en `DATABASE_URL`
+- **Primera ejecución**: Puede tomar varios minutos descargar dependencias
 
-# Reconstruir completamente
-docker-compose down
-docker-compose up --build
-
-# Ejecutar comandos Django dentro del contenedor
-docker-compose exec web python manage.py migrate
-docker-compose exec web python manage.py shell
-```
-
-## Características
-
-- ✅ **Modo Alto Contraste** - Accesibilidad completa
-- ✅ **Cálculo de Macronutrientes** - Usando Gemini AI
-- ✅ **Plan de Comidas Personalizado** - Horarios y distribución
-- ✅ **Tabla de Equivalencias** - Alimentos personalizados
-- ✅ **Gestión de Pacientes** - Valoraciones corporales
-- ✅ **Dashboard Interactivo** - Para nutricionistas y pacientes
-
-## Arquitectura
-
-- **Backend**: Django 5.2.2
-- **Base de Datos**: PostgreSQL (Railway)
-- **AI**: Google Gemini AI
-- **Frontend**: Bootstrap 5 + JavaScript
-- **Contenedor**: Docker + Docker Compose
-
-## Solución de Problemas
-
-### Puerto 8000 ocupado
-```bash
-# Verificar qué proceso usa el puerto
-netstat -ano | findstr :8000
-
-# Cambiar puerto en docker-compose.yml
-ports:
-  - "8001:8000"  # Usar puerto 8001 local
-```
-
-### Problemas de permisos
-```bash
-# Limpiar y reconstruir
-docker-compose down -v
-docker system prune -f
-docker-compose up --build
-```
-
-### Base de datos
-La aplicación usa PostgreSQL en Railway (nube), no necesita configuración local.
 
