@@ -26,8 +26,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar el código del proyecto
 COPY . /app/
 
-# Crear directorio para archivos media
-RUN mkdir -p /app/media
+# Crear directorios necesarios (no sobrescribir static que ya fue copiado)
+RUN mkdir -p /app/media /app/staticfiles
 
 # Establecer permisos
 RUN chmod +x /app/manage.py

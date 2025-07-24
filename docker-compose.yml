@@ -8,12 +8,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # Variables de entorno esenciales
-      - DEBUG=${DEBUG:-1}
+      # Variables de entorno esenciales - TODAS deben estar configuradas en .env
+      - DEBUG=${DEBUG}
       - DJANGO_SETTINGS_MODULE=nutricion_asistente.settings
-      - DATABASE_URL=postgresql://postgres:JyVlHYwbEzHjJcEdiMreERWdnDxIqvUZ@centerbeam.proxy.rlwy.net:16897/railway
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-AIzaSyBkPuWFRYgCQHf1nBEZnkqsIJ9pFvfMF6Q}
-      - SECRET_KEY=${SECRET_KEY:-django-insecure-ggksd)x66gzov)wmhcrtp9iio#(y119gg#jrdu%)i&cspg*ep-}
+      - DATABASE_URL=${DATABASE_URL}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
       - PYTHONPATH=/app
     env_file:
       - .env

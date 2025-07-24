@@ -25,7 +25,13 @@ Sistema de gestión nutricional con inteligencia artificial usando Django y Goog
    cp example.env .env
    ```
    
-   ⚠️ **IMPORTANTE**: No modificar el archivo `.env` - ya contiene toda la configuración necesaria.
+   ⚠️ **IMPORTANTE**: Debes configurar tus propias credenciales en el archivo `.env`:
+   
+   - **GOOGLE_API_KEY**: Obtén tu API key desde [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - **SECRET_KEY**: Genera una clave desde [Django Secret Key Generator](https://djecrety.ir/)
+   - **DATABASE_URL**: Configura tu base de datos PostgreSQL
+   
+   📖 Ver [SECURITY_SETUP.md](SECURITY_SETUP.md) para instrucciones detalladas.
 
 3. **Iniciar la aplicación**
    ```bash

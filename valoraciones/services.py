@@ -13,8 +13,13 @@ logger = logging.getLogger(__name__)
 from django.conf import settings
 import os
 
-# Usar variable de entorno o fallback a la key original
-API_KEY = os.environ.get('GOOGLE_API_KEY', 'AIzaSyDMkUp5NkWAoo9dLjJ7E3ozaRwVvIXoY9Q')
+# Configurar API key de Google Gemini desde variables de entorno
+API_KEY = os.environ.get('GOOGLE_API_KEY')
+if not API_KEY:
+    raise ValueError(
+        "GOOGLE_API_KEY no está configurada. "
+        "Por favor, configure esta variable en su archivo .env"
+    )
 genai.configure(api_key=API_KEY)
 
 

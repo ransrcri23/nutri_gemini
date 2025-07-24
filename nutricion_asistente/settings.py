@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ggksd)x66gzov)wmhcrtp9iio#(y119gg#jrdu%)i&cspg*ep-'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '*']
 
@@ -77,23 +81,23 @@ WSGI_APPLICATION = 'nutricion_asistente.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Configuración de base de datos adaptable para Docker y desarrollo local
+# Configuración de base de datos usando variables de entorno
 if os.environ.get('DATABASE_URL'):
-    # Configuración para Docker
+    # Configuración para Docker y producción con DATABASE_URL completa
     import dj_database_url
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 else:
-    # Configuración existente para desarrollo local
+    # Configuración para desarrollo local usando variables individuales
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'railway',  # Nombre de la base de datos
-            'USER': 'postgres',  # Nombre de usuario
-            'PASSWORD': 'JyVlHYwbEzHjJcEdiMreERWdnDxIqvUZ',  # Contraseña
-            'HOST': 'centerbeam.proxy.rlwy.net',  # Dirección del host
-            'PORT': '16897',  # Puerto
+            'NAME': os.environ.get('DATABASE_NAME', 'nutricion_db'),
+            'USER': os.environ.get('DATABASE_USER', 'postgres'),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+            'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+            'PORT': os.environ.get('DATABASE_PORT', '5432'),
         }
     }
 
