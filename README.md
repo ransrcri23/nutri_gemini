@@ -47,11 +47,15 @@ Sistema inteligente de gestión nutricional que utiliza **Google Gemini AI** par
    docker-compose down
    ```
 
-## ⚠️ Disclaimers
+## Disclaimers
 
 - **Configuración requerida**: Debes configurar tus propias credenciales en `.env`
 - **API Key**: Necesitas una `GOOGLE_API_KEY` válida para que funcione la IA
 - **Base de datos**: Requiere una instancia PostgreSQL configurada en `DATABASE_URL`
 - **Primera ejecución**: Puede tomar varios minutos descargar dependencias
+
+**Nota:** [En este enlace](https://drive.google.com/drive/folders/1IXyiHmwqJEmgfS1ljhErB8-k6-_U0CxS?usp=drive_link) puedes solicitar acceso para descargar el archivo `.env` con el `GOOGLE_API_KEY` y `DATABASE_URL` de los desarrolladores de Nutri Gemini, así como una lista de credenciales para usuarios de prueba.
+
+*La aprobación de acceso a estas credenciales queda a discreción de los colaboradores de este proyecto.*
 
 
