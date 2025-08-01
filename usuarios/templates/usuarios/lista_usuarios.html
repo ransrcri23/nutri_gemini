@@ -132,7 +132,7 @@
                                                 ahora se crean automáticamente
                                                 {% endcomment %}
                                                 <form method="post" action="{% url 'toggle_usuario_activo' usuario.id %}" 
-                                                      class="d-inline" onsubmit="return confirm('Â¿Confirmar cambio de estado?')">
+                                                      class="d-inline" onsubmit="return confirm('¿Confirmar cambio de estado?')">
                                                     {% csrf_token %}
                                                     <button type="submit" 
                                                             class="btn btn-outline-{{ usuario.activo|yesno:'danger,success' }}" 
